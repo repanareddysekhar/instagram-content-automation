@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Signal Studio · Tech Content Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="noise"></div>
+  <main>
+    <nav>
+      <div class="brand"><span class="pulse"></span>SIGNAL STUDIO</div>
+      <div class="nav-right"><span id="mode" class="chip">LOADING</span><span id="clock"></span></div>
+    </nav>
+
+    <header>
+      <div>
+        <p class="eyebrow">CONTENT OPERATIONS / INSTAGRAM</p>
+        <h1>Find the signal.<br><em>Ship the story.</em></h1>
+      </div>
+      <div class="header-actions">
+        <p>Trusted sources → grounded script → carousel → approval → publish.</p>
+        <button id="runButton" class="primary">Run pipeline <span>↗</span></button>
+      </div>
+    </header>
+
+    <section id="stats" class="stats"></section>
+
+    <section class="workspace">
+      <div class="section-heading">
+        <div><p class="eyebrow">PRODUCTION QUEUE</p><h2>Editorial flow</h2></div>
+        <button id="syncButton" class="secondary">Sync metrics</button>
+      </div>
+      <div id="posts" class="posts"><div class="empty">Loading the queue…</div></div>
+    </section>
+
+    <section class="topics-panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">DISCOVERY</p><h2>Trusted-source radar</h2></div>
+      </div>
+      <div id="topics" class="topics"></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
+

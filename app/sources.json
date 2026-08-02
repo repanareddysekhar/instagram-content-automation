@@ -1,0 +1,33 @@
+[
+  {
+    "name": "OpenAI News",
+    "url": "https://openai.com/news/rss.xml",
+    "trust_tier": 1,
+    "tags": ["ai", "openai"]
+  },
+  {
+    "name": "Google Research",
+    "url": "https://research.google/blog/rss/",
+    "trust_tier": 1,
+    "tags": ["ai", "research"]
+  },
+  {
+    "name": "GitHub Blog",
+    "url": "https://github.blog/feed/",
+    "trust_tier": 1,
+    "tags": ["developer-tools", "open-source"]
+  },
+  {
+    "name": "AWS What's New",
+    "url": "https://aws.amazon.com/about-aws/whats-new/recent/feed/",
+    "trust_tier": 1,
+    "tags": ["cloud", "aws"]
+  },
+  {
+    "name": "Cloudflare Blog",
+    "url": "https://blog.cloudflare.com/rss/",
+    "trust_tier": 1,
+    "tags": ["security", "infrastructure"]
+  }
+]
+
