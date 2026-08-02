@@ -1,0 +1,81 @@
+.env.example
+  s_c7832d419397f6::t_0b5b72a3a8745f 1-26
+.gitignore
+  s_c7832d419397f6::t_933b95b982d095 1-9
+Dockerfile
+  s_c7832d419397f6::t_ba5aadd37ef55a 1-16
+README.md
+  s_c7832d419397f6::t_0dd55f55a6ce95 1-130
+app/__init__.py
+  s_c7832d419397f6::t_d67d14b2260013 1-2
+app/config.py
+  s_c7832d419397f6::t_e2724dcbef05a8 1-62
+app/db.py
+  s_c7832d419397f6::t_aa56b6a5889588 1-297
+app/main.py
+  s_c7832d419397f6::t_6b3e3f6a5ade13 1-180
+app/pipeline.py
+  s_c7832d419397f6::t_d7b5b138a16f73 1-169
+app/schema.py
+  s_c7832d419397f6::t_60431e9096189b 1-46
+app/services/__init__.py
+  s_c7832d419397f6::t_1427c95b94c873 1-2
+app/services/ai.py
+  s_c7832d419397f6::t_d36d4b47dc0f92 1-154
+app/services/assets.py
+  s_c7832d419397f6::t_917ae88c3427d2 1-117
+app/services/instagram.py
+  s_c7832d419397f6::t_06a1c20600ad0d 1-97
+app/services/quality.py
+  s_c7832d419397f6::t_10c6ca9aeddc65 1-40
+app/services/telegram.py
+  s_c7832d419397f6::t_3e7ff45260a316 1-69
+app/services/topics.py
+  s_c7832d419397f6::t_8395f414225550 1-72
+app/sources.json
+  s_c7832d419397f6::t_cf79fc38958c57 1-33
+app/static/app.js
+  s_c7832d419397f6::t_475e55716cf4a3 1-124
+app/static/index.html
+  s_c7832d419397f6::t_6b0e846d62b2f5 1-53
+app/static/styles.css
+  s_c7832d419397f6::t_89b63985802987 1-73
+app/worker.py
+  s_c7832d419397f6::t_240dc296df3836 1-29
+data/generated/.gitkeep
+  s_c7832d419397f6::t_438ef3b58d3787 1
+docker-compose.yml
+  s_c7832d419397f6::t_3e1d21523a1e63 1-10
+pyproject.toml
+  s_c7832d419397f6::t_d14d9ee3e59071 1-33
+tech_content_agent.egg-info/PKG-INFO
+  s_c7832d419397f6::t_c2c6b1fd316444 1-147
+tech_content_agent.egg-info/SOURCES.txt
+  s_c7832d419397f6::t_beb87791e49f2f 1-23
+tech_content_agent.egg-info/dependency_links.txt
+  s_c7832d419397f6::t_11abcd1692e7aa 1
+tech_content_agent.egg-info/requires.txt
+  s_c7832d419397f6::t_74e8d45e87bb9a 1-11
+tech_content_agent.egg-info/top_level.txt
+  s_c7832d419397f6::t_417d32c8f079c2 1
+tests/test_pipeline.py
+  s_c7832d419397f6::t_1692c20b563b32 1-51
+tests/test_quality.py
+  s_c7832d419397f6::t_997e70582d3f38 1-43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "787b6bcb76578086e3a03d213a6887201706037b",
+  "prompts": {},
+  "sessions": {
+    "s_c7832d419397f6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f8f7f-937e-7691-8328-014597c1057d",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Repana Reddy Sekhar <rreddy@bigid.com>"
+    }
+  }
+}
