@@ -1,5 +1,6 @@
 import base64
 import io
+import logging
 import textwrap
 from pathlib import Path
 from typing import Protocol
@@ -9,6 +10,9 @@ from openai import OpenAI
 from PIL import Image, ImageDraw, ImageFont
 
 from app.config import Settings
+
+
+logger = logging.getLogger("tech_content_agent.assets")
 
 
 PALETTES = [
@@ -111,6 +115,13 @@ class CarouselRenderer:
         self.image_provider = build_image_provider(settings)
 
     def render(self, post_id: int, slides: list[dict], source_name: str) -> list[str]:
+        provider_name = self.settings.image_provider if self.image_provider else "deterministic"
+        logger.info(
+            "assets.render.start post_id=%d slides=%d provider=%s",
+            post_id,
+            len(slides),
+            provider_name,
+        )
         paths = []
         for index, slide in enumerate(slides, start=1):
             path = self.output_dir / f"post-{post_id}-slide-{index}.jpg"
@@ -125,6 +136,19 @@ class CarouselRenderer:
                 art=background,
             )
             paths.append(str(path))
+            logger.info(
+                "assets.render.slide post_id=%d slide=%d ai_background=%s path=%s",
+                post_id,
+                index,
+                background is not None,
+                path,
+            )
+        logger.info(
+            "assets.render.completed post_id=%d files=%d provider=%s",
+            post_id,
+            len(paths),
+            provider_name,
+        )
         return paths
 
     def _generate_art(self, prompt: str) -> Image.Image | None:

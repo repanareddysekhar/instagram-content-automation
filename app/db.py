@@ -193,6 +193,16 @@ class Database:
             for row in rows
         ]
 
+    def get_topic_by_url(self, url: str) -> dict[str, Any] | None:
+        with self.connect() as conn:
+            row = conn.execute("SELECT * FROM topics WHERE url = ?", (url,)).fetchone()
+        if not row:
+            return None
+        return {
+            **dict(row),
+            "tags": json.loads(row["tags_json"]),
+        }
+
     def add_event(
         self, event_type: str, post_id: int | None = None, payload: dict[str, Any] | None = None
     ) -> None:
@@ -201,6 +211,23 @@ class Database:
                 "INSERT INTO events (post_id, event_type, payload_json, created_at) VALUES (?, ?, ?, ?)",
                 (post_id, event_type, json.dumps(payload or {}), now_iso()),
             )
+
+    def list_events(self, limit: int = 50) -> list[dict[str, Any]]:
+        with self.connect() as conn:
+            rows = conn.execute(
+                "SELECT * FROM events ORDER BY created_at DESC, id DESC LIMIT ?",
+                (limit,),
+            ).fetchall()
+        return [
+            {
+                "id": int(row["id"]),
+                "post_id": row["post_id"],
+                "event_type": row["event_type"],
+                "payload": json.loads(row["payload_json"] or "{}"),
+                "created_at": row["created_at"],
+            }
+            for row in rows
+        ]
 
     def save_metrics(self, post_id: int, values: dict[str, float]) -> None:
         stamp = now_iso()

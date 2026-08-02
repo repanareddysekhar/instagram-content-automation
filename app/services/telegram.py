@@ -1,10 +1,15 @@
+import asyncio
 import json
+import logging
 from pathlib import Path
-from typing import Any
+from typing import Any, Awaitable, Callable
 
 import httpx
 
 from app.config import Settings
+
+
+logger = logging.getLogger("tech_content_agent.telegram")
 
 
 class TelegramApproval:
@@ -18,6 +23,7 @@ class TelegramApproval:
         if not self.settings.telegram_ready:
             return {"sent": False, "reason": "Telegram is not configured"}
 
+        logger.info("telegram.approval.send.start post_id=%s assets=%d", post["id"], len(post["assets"]))
         async with httpx.AsyncClient(timeout=60) as client:
             files = {}
             media = []
@@ -57,6 +63,11 @@ class TelegramApproval:
                 },
             )
             decision.raise_for_status()
+            logger.info(
+                "telegram.approval.send.completed post_id=%s message_id=%s",
+                post["id"],
+                decision.json()["result"].get("message_id"),
+            )
             return {"sent": True, "message": decision.json()["result"]}
 
     async def answer_callback(self, callback_id: str, text: str) -> None:
@@ -68,3 +79,64 @@ class TelegramApproval:
                 json={"callback_query_id": callback_id, "text": text},
             )
             response.raise_for_status()
+        logger.info("telegram.callback.answered callback_id=%s", callback_id)
+
+    async def get_updates(
+        self,
+        client: httpx.AsyncClient,
+        offset: int | None,
+    ) -> list[dict[str, Any]]:
+        params: dict[str, Any] = {
+            "timeout": self.settings.telegram_poll_timeout_seconds,
+            "allowed_updates": json.dumps(["callback_query"]),
+        }
+        if offset is not None:
+            params["offset"] = offset
+        response = await client.get(f"{self.base_url}/getUpdates", params=params)
+        response.raise_for_status()
+        payload = response.json()
+        if not payload.get("ok"):
+            raise RuntimeError("Telegram returned an unsuccessful getUpdates response")
+        return payload.get("result", [])
+
+    async def poll_updates(
+        self,
+        handler: Callable[[dict[str, Any]], Awaitable[None]],
+    ) -> None:
+        offset: int | None = None
+        timeout = self.settings.telegram_poll_timeout_seconds + 10
+        logger.info(
+            "telegram.poll.start timeout_seconds=%d",
+            self.settings.telegram_poll_timeout_seconds,
+        )
+        async with httpx.AsyncClient(timeout=timeout) as client:
+            while True:
+                try:
+                    updates = await self.get_updates(client, offset)
+                except asyncio.CancelledError:
+                    logger.info("telegram.poll.stop")
+                    raise
+                except Exception as exc:
+                    response = getattr(exc, "response", None)
+                    logger.error(
+                        "telegram.poll.failed error_type=%s status_code=%s",
+                        type(exc).__name__,
+                        getattr(response, "status_code", None),
+                    )
+                    await asyncio.sleep(3)
+                    continue
+
+                if updates:
+                    logger.info("telegram.poll.received updates=%d", len(updates))
+                for update in updates:
+                    update_id = update.get("update_id")
+                    if isinstance(update_id, int):
+                        offset = max(offset or 0, update_id + 1)
+                    try:
+                        await handler(update)
+                    except Exception as exc:
+                        logger.error(
+                            "telegram.update.failed update_id=%s error_type=%s",
+                            update_id,
+                            type(exc).__name__,
+                        )

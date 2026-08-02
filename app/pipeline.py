@@ -1,5 +1,7 @@
 import json
+import logging
 from pathlib import Path
+from time import perf_counter
 from typing import Any
 
 from app.config import Settings
@@ -13,6 +15,9 @@ from app.services.telegram import TelegramApproval
 from app.services.topics import DEMO_TOPIC, TopicFinder
 
 
+logger = logging.getLogger("tech_content_agent.pipeline")
+
+
 class ContentPipeline:
     def __init__(self, settings: Settings, db: Database):
         self.settings = settings
@@ -24,6 +29,8 @@ class ContentPipeline:
         self.instagram = InstagramPublisher(settings)
 
     def discover(self, force_demo: bool = False) -> list[dict[str, Any]]:
+        mode = "demo" if force_demo or self.settings.mock_mode else "live"
+        logger.info("pipeline.discovery.start mode=%s", mode)
         topics = [DEMO_TOPIC] if force_demo or self.settings.mock_mode else self.finder.fetch()
         learned = self.db.tag_performance()
         results = []
@@ -36,21 +43,80 @@ class ContentPipeline:
             topic_id = self.db.upsert_topic(item)
             results.append({"id": topic_id, **item})
         self.db.add_event("topics.discovered", payload={"count": len(results)})
+        logger.info("pipeline.discovery.completed mode=%s topics=%d", mode, len(results))
         return results
 
     async def run(self, topic_url: str | None = None, force_demo: bool = False) -> dict[str, Any]:
-        topics = self.discover(force_demo=force_demo)
+        logger.info(
+            "pipeline.run.start requested_topic=%s force_demo=%s",
+            topic_url or "top-ranked",
+            force_demo,
+        )
         if topic_url:
-            selected = next((topic for topic in topics if topic["url"] == topic_url), None)
+            selected = self.db.get_topic_by_url(topic_url)
+            if not selected:
+                topics = self.discover(force_demo=force_demo)
+                selected = next((topic for topic in topics if topic["url"] == topic_url), None)
             if not selected:
                 raise ValueError("Requested topic URL was not found in the trusted-source batch")
         else:
+            topics = self.discover(force_demo=force_demo)
             selected = topics[0] if topics else None
         if not selected:
             raise RuntimeError("No eligible topics were discovered")
 
-        topic = Topic.model_validate({key: value for key, value in selected.items() if key != "id"})
-        draft = self.writer.write(topic)
+        logger.info(
+            "pipeline.topic.selected topic_id=%s source=%s score=%s url=%s",
+            selected["id"],
+            selected["source_name"],
+            selected["score"],
+            selected["url"],
+        )
+        topic = Topic.model_validate(
+            {
+                key: value
+                for key, value in selected.items()
+                if key not in {"id", "tags_json", "status", "created_at"}
+            }
+        )
+        generation_started = perf_counter()
+        self.db.add_event(
+            "generation.started",
+            payload={
+                "provider": self.settings.text_provider,
+                "topic_id": selected["id"],
+                "topic_title": topic.title,
+            },
+        )
+        try:
+            draft = self.writer.write(topic)
+        except Exception as exc:
+            self.db.add_event(
+                "generation.failed",
+                payload={
+                    "provider": self.settings.text_provider,
+                    "topic_id": selected["id"],
+                    "error_type": type(exc).__name__,
+                },
+            )
+            raise
+        generation_ms = round((perf_counter() - generation_started) * 1000)
+        self.db.add_event(
+            "generation.completed",
+            payload={
+                "provider": self.settings.text_provider,
+                "topic_id": selected["id"],
+                "duration_ms": generation_ms,
+                "slides": len(draft.slides),
+                "claims": len(draft.claims),
+            },
+        )
+        logger.info(
+            "pipeline.generation.completed topic_id=%s duration_ms=%d title=%s",
+            selected["id"],
+            generation_ms,
+            draft.title,
+        )
         duplicate_score = highest_duplicate_score(
             draft.title,
             self.db.historical_titles(),
@@ -72,8 +138,25 @@ class ContentPipeline:
             claims_json=json.dumps(verified_claims),
         )
         self.db.add_event("post.drafted", post_id, {"status": status})
+        logger.info(
+            "pipeline.quality.completed post_id=%d duplicate_score=%.3f fact_score=%.3f status=%s",
+            post_id,
+            duplicate_score,
+            fact_score,
+            status,
+        )
 
         if status.startswith("blocked"):
+            self.db.add_event(
+                "post.blocked",
+                post_id,
+                {
+                    "reason": status,
+                    "duplicate_score": duplicate_score,
+                    "fact_score": fact_score,
+                },
+            )
+            logger.warning("pipeline.run.blocked post_id=%d reason=%s", post_id, status)
             return self.db.get_post(post_id) or {}
 
         assets = self.renderer.render(
@@ -87,6 +170,18 @@ class ContentPipeline:
             assets_json=json.dumps(assets),
             status=target_status,
         )
+        self.db.add_event(
+            "assets.rendered",
+            post_id,
+            {
+                "count": len(assets),
+                "provider": (
+                    self.settings.image_provider
+                    if self.renderer.image_provider
+                    else "deterministic"
+                ),
+            },
+        )
         post = self.db.get_post(post_id) or {}
 
         if self.settings.auto_publish:
@@ -94,6 +189,13 @@ class ContentPipeline:
 
         telegram_result = await self.telegram.send_for_approval(post)
         self.db.add_event("approval.requested", post_id, telegram_result)
+        logger.info(
+            "pipeline.run.completed post_id=%d status=%s assets=%d telegram_sent=%s",
+            post_id,
+            target_status,
+            len(assets),
+            telegram_result.get("sent", False),
+        )
         return self.db.get_post(post_id) or {}
 
     async def approve(self, post_id: int) -> dict[str, Any]:
@@ -102,7 +204,9 @@ class ContentPipeline:
             raise ValueError(f"Post cannot be approved from status {post['status']}")
         self.db.update_post(post_id, status="approved")
         self.db.add_event("post.approved", post_id)
-        if self.settings.instagram_ready or self.settings.mock_mode:
+        if self.settings.publish_after_approval and (
+            self.settings.instagram_ready or self.settings.mock_mode
+        ):
             return await self.publish(post_id)
         return self._require_post(post_id)
 
@@ -141,7 +245,10 @@ class ContentPipeline:
             post for post in self.db.list_posts(limit=100)
             if post["status"] == "published" and post["instagram_media_id"]
         ]
+        logger.info("metrics.sync.start eligible_posts=%d", len(published))
         synced = 0
+        skipped = 0
+        failed = 0
         for post in published:
             if self.settings.mock_mode:
                 values = {
@@ -152,12 +259,60 @@ class ContentPipeline:
                     "shares": 9 + post["id"],
                 }
             else:
-                values = await self.instagram.insights(post["instagram_media_id"])
+                if str(post["instagram_media_id"]).startswith("mock-instagram-"):
+                    skipped += 1
+                    self.db.add_event(
+                        "metrics.skipped",
+                        post["id"],
+                        {"reason": "mock_media_id_in_live_mode"},
+                    )
+                    logger.warning(
+                        "metrics.post.skipped post_id=%d reason=mock_media_id_in_live_mode",
+                        post["id"],
+                    )
+                    continue
+                try:
+                    values = await self.instagram.insights(post["instagram_media_id"])
+                except Exception as exc:
+                    failed += 1
+                    response = getattr(exc, "response", None)
+                    status_code = getattr(response, "status_code", None)
+                    self.db.add_event(
+                        "metrics.failed",
+                        post["id"],
+                        {
+                            "error_type": type(exc).__name__,
+                            "status_code": status_code,
+                        },
+                    )
+                    logger.error(
+                        "metrics.post.failed post_id=%d error_type=%s status_code=%s",
+                        post["id"],
+                        type(exc).__name__,
+                        status_code,
+                    )
+                    continue
             self.db.save_metrics(post["id"], values)
             synced += 1
-        self.db.add_event("metrics.synced", payload={"posts": synced})
+            logger.info(
+                "metrics.post.completed post_id=%d metrics=%d",
+                post["id"],
+                len(values),
+            )
+        self.db.add_event(
+            "metrics.synced",
+            payload={"posts": synced, "skipped": skipped, "failed": failed},
+        )
+        logger.info(
+            "metrics.sync.completed synced=%d skipped=%d failed=%d",
+            synced,
+            skipped,
+            failed,
+        )
         return {
             "posts_synced": synced,
+            "posts_skipped": skipped,
+            "posts_failed": failed,
             "metrics": self.db.latest_metrics(),
             "learned_tag_scores": self.db.tag_performance(),
         }

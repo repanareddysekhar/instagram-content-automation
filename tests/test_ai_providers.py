@@ -9,11 +9,13 @@ from PIL import Image
 from app.config import Settings
 from app.services.ai import (
     AnthropicTextProvider,
+    ContentWriter,
     GeminiTextProvider,
     OpenAICompatibleTextProvider,
 )
 from app.services.assets import GeminiImageProvider
 from app.services.assets import CarouselRenderer
+from app.schema import Topic
 
 
 def _draft_json() -> str:
@@ -91,6 +93,8 @@ def test_openai_compatible_provider_supports_keyless_local_service() -> None:
         payload = json.loads(request.content)
         assert payload["model"] == "local-model"
         assert payload["response_format"]["type"] == "json_schema"
+        assert "provider" not in payload
+        assert "plugins" not in payload
         return httpx.Response(
             200,
             json={"choices": [{"message": {"content": _draft_json()}}]},
@@ -104,6 +108,63 @@ def test_openai_compatible_provider_supports_keyless_local_service() -> None:
         httpx.Client(transport=httpx.MockTransport(handler)),
     )
     assert json.loads(provider.generate("prompt", {"type": "object"}))["hook"] == "A useful hook"
+
+
+def test_openrouter_requires_schema_capable_provider_and_response_healing() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        payload = json.loads(request.content)
+        assert payload["provider"] == {"require_parameters": True}
+        assert payload["plugins"] == [{"id": "response-healing"}]
+        return httpx.Response(
+            200,
+            json={
+                "model": "test/free-model",
+                "usage": {"prompt_tokens": 10, "completion_tokens": 20},
+                "choices": [{"message": {"content": _draft_json()}}],
+            },
+        )
+
+    provider = OpenAICompatibleTextProvider(
+        "openrouter-key",
+        "openrouter/free",
+        "https://openrouter.ai/api/v1",
+        5,
+        httpx.Client(transport=httpx.MockTransport(handler)),
+    )
+    assert json.loads(provider.generate("prompt", {"type": "object"}))["format"] == "carousel"
+
+
+def test_writer_retries_schema_invalid_response() -> None:
+    class FlakyProvider:
+        calls = 0
+
+        def generate(self, prompt, schema):
+            self.calls += 1
+            return "{}" if self.calls == 1 else _draft_json()
+
+    writer = ContentWriter(
+        Settings(
+            _env_file=None,
+            mock_mode=False,
+            text_provider="openai_compatible",
+            openai_compatible_base_url="http://localhost:11434/v1",
+            openai_compatible_text_model="local-model",
+            ai_generation_attempts=2,
+        )
+    )
+    flaky = FlakyProvider()
+    writer.provider = flaky
+    draft = writer.write(
+        Topic(
+            title="Test topic",
+            url="https://example.com/topic",
+            summary="Summary",
+            source_name="Example",
+        )
+    )
+
+    assert flaky.calls == 2
+    assert draft.title == "A grounded title"
 
 
 def test_gemini_image_provider_decodes_inline_image() -> None:

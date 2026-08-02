@@ -48,6 +48,18 @@ python -m app.worker --demo
 python -m app.worker --sync-metrics
 ```
 
+## Logs and dashboard activity
+
+Set `LOG_LEVEL=INFO` (the default) and run with Uvicorn to see each pipeline stage:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+The logs show source-by-source RSS scanning, the selected topic, text provider and configured model, OpenRouter's actual routed model and token usage, LLM request start/completion/failure, schema retries, quality scores, duplicate/fact blocks, deterministic or AI-backed image rendering, publishing, and per-post metrics results. API keys and Instagram access tokens are not included in request URLs.
+
+The dashboard also includes a **Pipeline activity** timeline. Use **Scan sources** to refresh the trusted RSS feeds, filter or search the resulting topics, and select **Generate** on a specific topic. **Generate top topic** scans live sources and selects the highest-ranked result; it no longer forces the built-in demo topic.
+
 ## Switch to live mode
 
 1. Set `MOCK_MODE=false`.
@@ -87,7 +99,12 @@ OPENAI_COMPATIBLE_TEXT_MODEL=your-provider/model
 For local Ollama, use its `/v1` URL and leave the API key empty. The selected service must support JSON-schema response formats.
 
 3. Create a Telegram bot with BotFather and add `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`.
-4. Configure the Telegram webhook, including the secret header:
+
+In development, `TELEGRAM_UPDATE_MODE=auto` uses Telegram long polling. This is the default and works on `localhost`; no webhook or public URL is required for approval buttons. Keep only one local app process consuming updates for a bot.
+
+For an approval-only local test, set `PUBLISH_AFTER_APPROVAL=false`. The Telegram button will move the draft to `approved` without contacting Instagram. Set it to `true` when `APP_BASE_URL` is a public HTTPS URL and you want approval to trigger publishing.
+
+In production, `auto` switches to webhook mode. Configure the webhook with a public HTTPS `APP_BASE_URL` and the secret header:
 
 ```bash
 curl "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
@@ -95,8 +112,8 @@ curl "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
   -d "secret_token=${TELEGRAM_WEBHOOK_SECRET}"
 ```
 
-5. Configure an Instagram professional account and a Meta app. Add `INSTAGRAM_USER_ID`, `INSTAGRAM_ACCESS_TOKEN`, and the current `META_GRAPH_API_VERSION`.
-6. Deploy the app to a public HTTPS URL and set `APP_BASE_URL`. Instagram must be able to fetch each generated JPEG from `/generated/...`.
+4. Configure an Instagram professional account and a Meta app. Add `INSTAGRAM_USER_ID`, `INSTAGRAM_ACCESS_TOKEN`, and the current `META_GRAPH_API_VERSION`.
+5. Deploy the app to a public HTTPS URL and set `APP_BASE_URL`. Instagram must be able to fetch each generated JPEG from `/generated/...`; `localhost` image URLs cannot be published by Instagram.
 
 The Instagram adapter intentionally does not guess a Graph API version. Put the version used by your Meta app in `.env`, and revalidate it during Meta's version-upgrade windows.
 
@@ -106,6 +123,7 @@ The Instagram adapter intentionally does not guess a Graph API version. Put the 
 - Anthropic uses the native Messages API structured-output format.
 - OpenAI keeps the original Responses API integration and explicitly uses low reasoning effort.
 - `openai_compatible` uses Chat Completions and works only when the selected service/model supports `response_format.type=json_schema`.
+- OpenRouter requests require providers that support every requested parameter, enable response healing, and retry schema-invalid responses up to `AI_GENERATION_ATTEMPTS`.
 - Generated backgrounds are disabled by default. To use Gemini art, set `ENABLE_AI_ART=true` and `IMAGE_PROVIDER=gemini`. Use `IMAGE_PROVIDER=openai` for GPT Image.
 - The deterministic renderer always owns typography because generated images can be inconsistent with exact text placement.
 

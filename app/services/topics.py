@@ -1,4 +1,5 @@
 import json
+import logging
 import math
 import re
 from datetime import UTC, datetime
@@ -7,6 +8,9 @@ from pathlib import Path
 import feedparser
 
 from app.schema import Topic
+
+
+logger = logging.getLogger("tech_content_agent.topics")
 
 
 DEMO_TOPIC = Topic(
@@ -28,9 +32,22 @@ class TopicFinder:
         self.sources = json.loads(sources_path.read_text())
 
     def fetch(self, per_source: int = 8) -> list[Topic]:
+        logger.info(
+            "topics.scan.start sources=%d per_source=%d",
+            len(self.sources),
+            per_source,
+        )
         topics: list[Topic] = []
         for source in self.sources:
+            logger.info("topics.source.start name=%s url=%s", source["name"], source["url"])
             feed = feedparser.parse(source["url"])
+            if getattr(feed, "bozo", False):
+                logger.warning(
+                    "topics.source.warning name=%s error_type=%s",
+                    source["name"],
+                    type(getattr(feed, "bozo_exception", None)).__name__,
+                )
+            accepted = 0
             for entry in feed.entries[:per_source]:
                 title = self._clean(entry.get("title", ""))
                 summary = self._clean(entry.get("summary", ""))
@@ -47,7 +64,16 @@ class TopicFinder:
                         score=self._score(title, summary, source.get("trust_tier", 2)),
                     )
                 )
-        return sorted(topics, key=lambda topic: topic.score, reverse=True)
+                accepted += 1
+            logger.info(
+                "topics.source.completed name=%s entries=%d accepted=%d",
+                source["name"],
+                len(feed.entries),
+                accepted,
+            )
+        ranked = sorted(topics, key=lambda topic: topic.score, reverse=True)
+        logger.info("topics.scan.completed topics=%d", len(ranked))
+        return ranked
 
     @staticmethod
     def _clean(value: str) -> str:
@@ -69,4 +95,3 @@ class TopicFinder:
         signal = sum(6 for term in signal_terms if term in f"{title} {summary}".lower())
         trust = max(0, 40 - (trust_tier - 1) * 10)
         return round(min(100, trust + recency_proxy + signal + math.log2(len(title) + 1)), 2)
-

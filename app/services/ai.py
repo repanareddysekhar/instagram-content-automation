@@ -1,11 +1,17 @@
 import json
+import logging
+from time import perf_counter
 from typing import Any, Protocol
 
 import httpx
 from openai import OpenAI
+from pydantic import ValidationError
 
 from app.config import Settings
 from app.schema import ContentDraft, Topic
+
+
+logger = logging.getLogger("tech_content_agent.ai")
 
 
 CONTENT_SCHEMA: dict[str, Any] = {
@@ -175,31 +181,45 @@ class OpenAICompatibleTextProvider:
         self.api_key = api_key
         self.model = model
         self.base_url = base_url.rstrip("/")
+        self.is_openrouter = "openrouter.ai" in self.base_url
         self.http = http_client or httpx.Client(timeout=timeout)
 
     def generate(self, prompt: str, schema: dict[str, Any]) -> str:
         headers = {"Authorization": f"Bearer {self.api_key}"} if self.api_key else {}
+        payload: dict[str, Any] = {
+            "model": self.model,
+            "messages": [{"role": "user", "content": prompt}],
+            "stream": False,
+            "response_format": {
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "carousel_draft",
+                    "strict": True,
+                    "schema": schema,
+                },
+            },
+        }
+        if self.is_openrouter:
+            payload["provider"] = {"require_parameters": True}
+            payload["plugins"] = [{"id": "response-healing"}]
         response = self.http.post(
             f"{self.base_url}/chat/completions",
             headers=headers,
-            json={
-                "model": self.model,
-                "messages": [{"role": "user", "content": prompt}],
-                "response_format": {
-                    "type": "json_schema",
-                    "json_schema": {
-                        "name": "carousel_draft",
-                        "strict": True,
-                        "schema": schema,
-                    },
-                },
-            },
+            json=payload,
         )
         response.raise_for_status()
         try:
-            content = response.json()["choices"][0]["message"]["content"]
+            result = response.json()
+            content = result["choices"][0]["message"]["content"]
             if not isinstance(content, str):
                 raise TypeError
+            usage = result.get("usage") or {}
+            logger.info(
+                "compatible.response routed_model=%s prompt_tokens=%s completion_tokens=%s",
+                result.get("model", "unknown"),
+                usage.get("prompt_tokens", "unknown"),
+                usage.get("completion_tokens", "unknown"),
+            )
             return content
         except (KeyError, IndexError, TypeError) as exc:
             raise RuntimeError("The OpenAI-compatible provider returned no text content") from exc
@@ -240,8 +260,17 @@ class ContentWriter:
         self.settings = settings
         self.provider = None if settings.mock_mode else build_text_provider(settings)
 
+    def _model_name(self) -> str:
+        return {
+            "openai": self.settings.openai_text_model,
+            "gemini": self.settings.gemini_text_model,
+            "anthropic": self.settings.anthropic_text_model,
+            "openai_compatible": self.settings.openai_compatible_text_model,
+        }.get(self.settings.text_provider.lower(), "unknown")
+
     def write(self, topic: Topic) -> ContentDraft:
         if self.settings.mock_mode:
+            logger.info("llm.bypass reason=mock_mode topic_url=%s", topic.url)
             return self._demo_draft(topic)
         if not self.provider:
             raise RuntimeError(
@@ -269,8 +298,62 @@ Summary: {topic.summary}
 
 Return only the required structured result.
 """
-        raw = self.provider.generate(prompt, CONTENT_SCHEMA)
-        return ContentDraft.model_validate(json.loads(raw))
+        total_started = perf_counter()
+        attempts = max(1, self.settings.ai_generation_attempts)
+        for attempt in range(1, attempts + 1):
+            attempt_started = perf_counter()
+            logger.info(
+                "llm.request.start provider=%s model=%s attempt=%d/%d topic_url=%s",
+                self.settings.text_provider,
+                self._model_name(),
+                attempt,
+                attempts,
+                topic.url,
+            )
+            try:
+                raw = self.provider.generate(prompt, CONTENT_SCHEMA)
+                draft = ContentDraft.model_validate(json.loads(raw))
+            except (json.JSONDecodeError, ValidationError) as exc:
+                logger.warning(
+                    "llm.response.invalid provider=%s model=%s attempt=%d/%d error_type=%s",
+                    self.settings.text_provider,
+                    self._model_name(),
+                    attempt,
+                    attempts,
+                    type(exc).__name__,
+                )
+                if attempt < attempts:
+                    continue
+                logger.error(
+                    "llm.request.failed provider=%s model=%s duration_ms=%d",
+                    self.settings.text_provider,
+                    self._model_name(),
+                    round((perf_counter() - total_started) * 1000),
+                )
+                raise
+            except Exception:
+                logger.exception(
+                    "llm.request.failed provider=%s model=%s attempt=%d/%d duration_ms=%d",
+                    self.settings.text_provider,
+                    self._model_name(),
+                    attempt,
+                    attempts,
+                    round((perf_counter() - attempt_started) * 1000),
+                )
+                raise
+            logger.info(
+                "llm.request.completed provider=%s model=%s attempt=%d/%d duration_ms=%d total_duration_ms=%d slides=%d claims=%d",
+                self.settings.text_provider,
+                self._model_name(),
+                attempt,
+                attempts,
+                round((perf_counter() - attempt_started) * 1000),
+                round((perf_counter() - total_started) * 1000),
+                len(draft.slides),
+                len(draft.claims),
+            )
+            return draft
+        raise RuntimeError("Text generation exhausted without a result")
 
     @staticmethod
     def _demo_draft(topic: Topic) -> ContentDraft:

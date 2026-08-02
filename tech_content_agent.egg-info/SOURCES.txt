@@ -19,5 +19,6 @@ tech_content_agent.egg-info/SOURCES.txt
 tech_content_agent.egg-info/dependency_links.txt
 tech_content_agent.egg-info/requires.txt
 tech_content_agent.egg-info/top_level.txt
+tests/test_ai_providers.py
 tests/test_pipeline.py
 tests/test_quality.py

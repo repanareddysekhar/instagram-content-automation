@@ -24,7 +24,7 @@
       </div>
       <div class="header-actions">
         <p>Trusted sources → grounded script → carousel → approval → publish.</p>
-        <button id="runButton" class="primary">Run pipeline <span>↗</span></button>
+        <button id="runButton" class="primary">Generate top topic <span>↗</span></button>
       </div>
     </header>
 
@@ -41,8 +41,20 @@
     <section class="topics-panel">
       <div class="section-heading">
         <div><p class="eyebrow">DISCOVERY</p><h2>Trusted-source radar</h2></div>
+        <div class="topic-controls">
+          <input id="topicSearch" type="search" placeholder="Search topics">
+          <select id="sourceFilter"><option value="">All sources</option></select>
+          <button id="scanButton" class="secondary">Scan sources</button>
+        </div>
       </div>
       <div id="topics" class="topics"></div>
+    </section>
+
+    <section class="activity-panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">OBSERVABILITY</p><h2>Pipeline activity</h2></div>
+      </div>
+      <div id="events" class="events"><div class="empty">No pipeline events yet.</div></div>
     </section>
   </main>
 
@@ -50,4 +62,3 @@
   <script src="/static/app.js"></script>
 </body>
 </html>
-

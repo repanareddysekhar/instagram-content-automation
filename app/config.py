@@ -9,11 +9,14 @@ class Settings(BaseSettings):
     app_base_url: str = "http://localhost:8000"
     database_path: str = "data/agent.db"
     auto_publish: bool = False
+    publish_after_approval: bool = True
     mock_mode: bool = True
     admin_token: str = "change-me"
+    log_level: str = "INFO"
 
     text_provider: str = "gemini"
     ai_request_timeout_seconds: float = 90.0
+    ai_generation_attempts: int = 2
 
     openai_api_key: str = ""
     openai_text_model: str = "gpt-5.6-terra"
@@ -39,6 +42,8 @@ class Settings(BaseSettings):
     telegram_bot_token: str = ""
     telegram_chat_id: str = ""
     telegram_webhook_secret: str = ""
+    telegram_update_mode: str = "auto"
+    telegram_poll_timeout_seconds: int = 25
 
     meta_graph_base_url: str = "https://graph.instagram.com"
     meta_graph_api_version: str = ""
@@ -61,6 +66,11 @@ class Settings(BaseSettings):
     @property
     def telegram_ready(self) -> bool:
         return bool(self.telegram_bot_token and self.telegram_chat_id)
+
+    @property
+    def telegram_polling_enabled(self) -> bool:
+        mode = self.telegram_update_mode.lower()
+        return mode == "polling" or (mode == "auto" and self.app_env == "development")
 
     @property
     def instagram_ready(self) -> bool:

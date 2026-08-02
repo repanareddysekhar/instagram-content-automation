@@ -1,9 +1,13 @@
 import asyncio
+import logging
 from typing import Any
 
 import httpx
 
 from app.config import Settings
+
+
+logger = logging.getLogger("tech_content_agent.instagram")
 
 
 class InstagramPublisher:
@@ -14,6 +18,38 @@ class InstagramPublisher:
             f"{settings.meta_graph_api_version.strip('/')}"
         )
 
+    def _client(self, timeout: float) -> httpx.AsyncClient:
+        return httpx.AsyncClient(
+            timeout=timeout,
+            headers={"Authorization": f"Bearer {self.settings.instagram_access_token}"},
+        )
+
+    @staticmethod
+    def _raise_api_error(response: httpx.Response, operation: str) -> None:
+        if not response.is_error:
+            return
+        try:
+            error = response.json().get("error", {})
+        except (ValueError, AttributeError):
+            error = {}
+        message = str(error.get("message") or response.reason_phrase or "Unknown error")
+        code = error.get("code")
+        subcode = error.get("error_subcode")
+        logger.error(
+            "instagram.api.failed operation=%s status_code=%d code=%s subcode=%s message=%s",
+            operation,
+            response.status_code,
+            code,
+            subcode,
+            message,
+        )
+        try:
+            response.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            raise RuntimeError(
+                f"Instagram {operation} failed ({response.status_code}): {message}"
+            ) from exc
+
     async def publish_carousel(self, post: dict[str, Any]) -> str:
         if not self.settings.instagram_ready:
             raise RuntimeError("Instagram API is not fully configured")
@@ -22,7 +58,8 @@ class InstagramPublisher:
             f"{self.settings.app_base_url.rstrip('/')}/generated/{asset.rsplit('/', 1)[-1]}"
             for asset in post["assets"]
         ]
-        async with httpx.AsyncClient(timeout=60) as client:
+        logger.info("instagram.publish.start post_id=%s assets=%d", post["id"], len(image_urls))
+        async with self._client(timeout=60) as client:
             child_ids = []
             for image_url in image_urls:
                 child = await client.post(
@@ -30,10 +67,9 @@ class InstagramPublisher:
                     data={
                         "image_url": image_url,
                         "is_carousel_item": "true",
-                        "access_token": self.settings.instagram_access_token,
                     },
                 )
-                child.raise_for_status()
+                self._raise_api_error(child, "carousel item creation")
                 child_ids.append(child.json()["id"])
 
             container = await client.post(
@@ -42,10 +78,9 @@ class InstagramPublisher:
                     "media_type": "CAROUSEL",
                     "children": ",".join(child_ids),
                     "caption": f"{post['caption']}\n\n{' '.join(post['hashtags'])}",
-                    "access_token": self.settings.instagram_access_token,
                 },
             )
-            container.raise_for_status()
+            self._raise_api_error(container, "carousel creation")
             container_id = container.json()["id"]
 
             await self._wait_until_ready(client, container_id)
@@ -53,11 +88,12 @@ class InstagramPublisher:
                 f"{self.root}/{self.settings.instagram_user_id}/media_publish",
                 data={
                     "creation_id": container_id,
-                    "access_token": self.settings.instagram_access_token,
                 },
             )
-            published.raise_for_status()
-            return str(published.json()["id"])
+            self._raise_api_error(published, "carousel publishing")
+            media_id = str(published.json()["id"])
+            logger.info("instagram.publish.completed post_id=%s media_id=%s", post["id"], media_id)
+            return media_id
 
     async def _wait_until_ready(self, client: httpx.AsyncClient, container_id: str) -> None:
         for _ in range(12):
@@ -65,10 +101,9 @@ class InstagramPublisher:
                 f"{self.root}/{container_id}",
                 params={
                     "fields": "status_code",
-                    "access_token": self.settings.instagram_access_token,
                 },
             )
-            response.raise_for_status()
+            self._raise_api_error(response, "container status check")
             status = response.json().get("status_code")
             if status == "FINISHED":
                 return
@@ -80,18 +115,18 @@ class InstagramPublisher:
     async def insights(self, media_id: str) -> dict[str, float]:
         if not self.settings.instagram_ready:
             raise RuntimeError("Instagram API is not fully configured")
-        async with httpx.AsyncClient(timeout=30) as client:
+        logger.info("instagram.insights.start media_id=%s", media_id)
+        async with self._client(timeout=30) as client:
             response = await client.get(
                 f"{self.root}/{media_id}/insights",
                 params={
                     "metric": self.settings.instagram_insight_metrics,
-                    "access_token": self.settings.instagram_access_token,
                 },
             )
-            response.raise_for_status()
+            self._raise_api_error(response, "insights sync")
         values: dict[str, float] = {}
         for item in response.json().get("data", []):
             raw = item.get("values", [{}])[0].get("value", 0)
             values[item["name"]] = float(raw)
+        logger.info("instagram.insights.completed media_id=%s metrics=%d", media_id, len(values))
         return values
-
