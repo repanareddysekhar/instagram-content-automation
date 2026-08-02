@@ -1,0 +1,53 @@
+data/agent.log
+  s_2f86c9c143e854::t_d8e16759ad438c 228-308
+  s_2f86c9c143e854::t_5056d77497d98a 314-395
+  s_2f86c9c143e854::t_8774cbdff0a4ec 614-696
+  s_2f86c9c143e854::t_62c4fd8359d160 396-477
+  s_2f86c9c143e854::t_1f5d6b489683b6 502-583
+  s_2f86c9c143e854::t_3607e5abacc5af 225-227
+  s_2f86c9c143e854::t_946877098bdae7 309-313
+  s_2f86c9c143e854::t_240f823285f03d 478-480,499-501
+  s_2f86c9c143e854::t_d74e7e6b779a4b 584-586,611-613
+  s_2f86c9c143e854::t_4113c21067518c 697-699
+  s_2f86c9c143e854::t_872c396ae1fd0b 213-224,481-498,587-610,700-704
+.env.example
+  s_2f86c9c143e854::t_83b67d369d1858 65-66
+  s_2f86c9c143e854::t_503a4fcbc051ca 48,51
+  s_2f86c9c143e854::t_01e15b3ac254d0 49-50
+tests/test_reels.py
+  s_2f86c9c143e854::t_b07718da524a3d 3-4,77-100,107-132
+  s_2f86c9c143e854::t_fbfafb15d5df76 101-106
+README.md
+  s_2f86c9c143e854::t_01e15b3ac254d0 69
+  s_2f86c9c143e854::t_83b67d369d1858 126-127
+app/services/instagram.py
+  s_2f86c9c143e854::t_83b67d369d1858 4,137-142,151-156,161-164
+app/services/assets.py
+  s_2f86c9c143e854::t_955034fb029811 318-367,376,378-379,381-384
+  s_2f86c9c143e854::t_01e15b3ac254d0 368-375,377,380
+app/config.py
+  s_2f86c9c143e854::t_503a4fcbc051ca 51
+  s_2f86c9c143e854::t_01e15b3ac254d0 54-55
+  s_2f86c9c143e854::t_83b67d369d1858 65-66
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "2083b1d18a93200033ffd024d05a7c6c3e04e397",
+  "prompts": {},
+  "humans": {
+    "h_cfd29a3d360382": {
+      "author": "Repana Reddy Sekhar <rreddy@bigid.com>"
+    }
+  },
+  "sessions": {
+    "s_2f86c9c143e854": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fc0c4-1d60-7c10-b459-a04701ad23ff",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Repana Reddy Sekhar <rreddy@bigid.com>"
+    }
+  }
+}
