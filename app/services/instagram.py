@@ -1,6 +1,7 @@
 import asyncio
 import logging
 from pathlib import Path
+from time import monotonic
 from typing import Any
 
 import httpx
@@ -133,7 +134,12 @@ class InstagramPublisher:
         return "\n\n".join(part for part in parts if part)
 
     async def _wait_until_ready(self, client: httpx.AsyncClient, container_id: str) -> None:
-        for _ in range(12):
+        timeout_seconds = max(5, self.settings.instagram_container_timeout_seconds)
+        poll_seconds = max(1, self.settings.instagram_container_poll_seconds)
+        deadline = monotonic() + timeout_seconds
+        attempt = 0
+        while monotonic() < deadline:
+            attempt += 1
             response = await client.get(
                 f"{self.root}/{container_id}",
                 params={
@@ -142,12 +148,20 @@ class InstagramPublisher:
             )
             self._raise_api_error(response, "container status check")
             status = response.json().get("status_code")
+            logger.info(
+                "instagram.container.status container_id=%s attempt=%d status=%s",
+                container_id,
+                attempt,
+                status,
+            )
             if status == "FINISHED":
                 return
             if status in {"ERROR", "EXPIRED"}:
                 raise RuntimeError(f"Instagram container failed with status {status}")
-            await asyncio.sleep(5)
-        raise TimeoutError("Instagram media container was not ready within 60 seconds")
+            await asyncio.sleep(min(poll_seconds, max(0, deadline - monotonic())))
+        raise TimeoutError(
+            f"Instagram media container was not ready within {timeout_seconds} seconds"
+        )
 
     async def insights(self, media_id: str) -> dict[str, float]:
         if not self.settings.instagram_ready:

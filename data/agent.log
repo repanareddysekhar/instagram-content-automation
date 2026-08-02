@@ -210,3 +210,495 @@
 2026-08-02T11:57:49+0530 INFO tech_content_agent.telegram telegram.approval.send.start post_id=8 assets=1
 2026-08-02T11:57:53+0530 INFO tech_content_agent.telegram telegram.approval.send.completed post_id=8 message_id=30
 2026-08-02T11:57:53+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=8 status=pending_approval assets=1 telegram_sent=True
+2026-08-02T12:00:29+0530 INFO tech_content_agent.telegram telegram.poll.stop
+2026-08-02T12:00:29+0530 INFO tech_content_agent app.stop
+2026-08-02T12:00:29+0530 INFO tech_content_agent app.start env=development mode=live text_provider=openai_compatible text_ready=True image_provider=none
+2026-08-02T12:00:29+0530 INFO tech_content_agent telegram.update_mode mode=polling
+2026-08-02T12:00:29+0530 INFO tech_content_agent.telegram telegram.poll.start timeout_seconds=25
+2026-08-02T12:00:58+0530 INFO tech_content_agent.telegram telegram.poll.stop
+2026-08-02T12:00:58+0530 INFO tech_content_agent app.stop
+2026-08-02T12:00:59+0530 INFO tech_content_agent app.start env=development mode=live text_provider=openai_compatible text_ready=True image_provider=none
+2026-08-02T12:00:59+0530 INFO tech_content_agent telegram.update_mode mode=polling
+2026-08-02T12:00:59+0530 INFO tech_content_agent.telegram telegram.poll.start timeout_seconds=25
+2026-08-02T12:01:17+0530 INFO tech_content_agent.telegram telegram.poll.stop
+2026-08-02T12:01:17+0530 INFO tech_content_agent app.stop
+2026-08-02T12:01:17+0530 INFO tech_content_agent app.start env=development mode=live text_provider=openai_compatible text_ready=True image_provider=none
+2026-08-02T12:01:17+0530 INFO tech_content_agent telegram.update_mode mode=polling
+2026-08-02T12:01:17+0530 INFO tech_content_agent.telegram telegram.poll.start timeout_seconds=25
+2026-08-02T12:01:21+0530 INFO tech_content_agent.ai compatible.response routed_model=unknown prompt_tokens=unknown completion_tokens=unknown
+2026-08-02T12:01:21+0530 INFO tech_content_agent.ai compatible.response routed_model=test/free-model prompt_tokens=10 completion_tokens=20
+2026-08-02T12:01:21+0530 INFO tech_content_agent.ai llm.request.start provider=openai_compatible model=local-model attempt=1/2 topic_url=https://example.com/topic
+2026-08-02T12:01:21+0530 WARNING tech_content_agent.ai llm.response.invalid provider=openai_compatible model=local-model attempt=1/2 error_type=ValidationError
+2026-08-02T12:01:21+0530 INFO tech_content_agent.ai llm.request.start provider=openai_compatible model=local-model attempt=2/2 topic_url=https://example.com/topic
+2026-08-02T12:01:21+0530 INFO tech_content_agent.ai llm.request.completed provider=openai_compatible model=local-model attempt=2/2 duration_ms=0 total_duration_ms=1 slides=6 claims=1
+2026-08-02T12:01:21+0530 INFO tech_content_agent.instagram instagram.insights.start media_id=real-media-id
+2026-08-02T12:01:21+0530 INFO tech_content_agent.instagram instagram.insights.completed media_id=real-media-id metrics=1
+2026-08-02T12:01:21+0530 ERROR tech_content_agent.instagram instagram.api.failed operation=carousel item creation status_code=400 code=100 subcode=2207005 message=The image URL is not publicly accessible
+2026-08-02T12:01:21+0530 INFO tech_content_agent.instagram instagram.reel.publish.start post_id=7 video_url=https://example.ngrok.app/generated/post-7-reel.mp4
+2026-08-02T12:01:21+0530 INFO tech_content_agent.instagram instagram.reel.publish.completed post_id=7 media_id=published-reel-id
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:21+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=5 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:01:21+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:01:21+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_demo_pipeline_approval_pu0/generated/post-1-slide-1.jpg
+2026-08-02T12:01:21+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_demo_pipeline_approval_pu0/generated/post-1-slide-2.jpg
+2026-08-02T12:01:21+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_demo_pipeline_approval_pu0/generated/post-1-slide-3.jpg
+2026-08-02T12:01:21+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_demo_pipeline_approval_pu0/generated/post-1-slide-4.jpg
+2026-08-02T12:01:21+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_demo_pipeline_approval_pu0/generated/post-1-slide-5.jpg
+2026-08-02T12:01:21+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_demo_pipeline_approval_pu0/generated/post-1-slide-6.jpg
+2026-08-02T12:01:21+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline metrics.sync.start eligible_posts=1
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline metrics.post.completed post_id=1 metrics=5
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline metrics.sync.completed synced=1 skipped=0 failed=0
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:21+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:01:21+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:01:21+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:01:21+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_second_identical_draft_is0/generated/post-1-slide-1.jpg
+2026-08-02T12:01:21+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_second_identical_draft_is0/generated/post-1-slide-2.jpg
+2026-08-02T12:01:21+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_second_identical_draft_is0/generated/post-1-slide-3.jpg
+2026-08-02T12:01:21+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_second_identical_draft_is0/generated/post-1-slide-4.jpg
+2026-08-02T12:01:21+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_second_identical_draft_is0/generated/post-1-slide-5.jpg
+2026-08-02T12:01:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_second_identical_draft_is0/generated/post-1-slide-6.jpg
+2026-08-02T12:01:22+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:22+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=2 duplicate_score=1.000 fact_score=1.000 status=blocked_duplicate
+2026-08-02T12:01:22+0530 WARNING tech_content_agent.pipeline pipeline.run.blocked post_id=2 reason=blocked_duplicate
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:22+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:01:22+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:01:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_live_metrics_skip_histori0/generated/post-1-slide-1.jpg
+2026-08-02T12:01:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_live_metrics_skip_histori0/generated/post-1-slide-2.jpg
+2026-08-02T12:01:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_live_metrics_skip_histori0/generated/post-1-slide-3.jpg
+2026-08-02T12:01:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_live_metrics_skip_histori0/generated/post-1-slide-4.jpg
+2026-08-02T12:01:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_live_metrics_skip_histori0/generated/post-1-slide-5.jpg
+2026-08-02T12:01:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_live_metrics_skip_histori0/generated/post-1-slide-6.jpg
+2026-08-02T12:01:22+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline metrics.sync.start eligible_posts=1
+2026-08-02T12:01:22+0530 WARNING tech_content_agent.pipeline metrics.post.skipped post_id=1 reason=mock_media_id_in_live_mode
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline metrics.sync.completed synced=0 skipped=1 failed=0
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:01:22+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:22+0530 ERROR tech_content_agent.pipeline pipeline.generation.timeout topic_id=1 timeout_seconds=0.0
+2026-08-02T12:01:22+0530 INFO tech_content_agent.assets reel.render.start post_id=7 beats=2 segment_seconds=1.00
+2026-08-02T12:01:22+0530 INFO tech_content_agent.assets reel.render.completed post_id=7 path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-25/test_reel_renderer_creates_vid0/post-7-reel.mp4 frames=4 voiceover=False music=False
+2026-08-02T12:01:22+0530 INFO tech_content_agent.assets reel.voiceover.openrouter.start post_id=8 model=test-tts-model voice=nova
+2026-08-02T12:01:29+0530 INFO tech_content_agent.telegram telegram.poll.stop
+2026-08-02T12:01:29+0530 INFO tech_content_agent app.stop
+2026-08-02T12:01:30+0530 INFO tech_content_agent app.start env=development mode=live text_provider=openai_compatible text_ready=True image_provider=none
+2026-08-02T12:01:30+0530 INFO tech_content_agent telegram.update_mode mode=polling
+2026-08-02T12:01:30+0530 INFO tech_content_agent.telegram telegram.poll.start timeout_seconds=25
+2026-08-02T12:01:33+0530 INFO tech_content_agent.ai compatible.response routed_model=unknown prompt_tokens=unknown completion_tokens=unknown
+2026-08-02T12:01:33+0530 INFO tech_content_agent.ai compatible.response routed_model=test/free-model prompt_tokens=10 completion_tokens=20
+2026-08-02T12:01:33+0530 INFO tech_content_agent.ai llm.request.start provider=openai_compatible model=local-model attempt=1/2 topic_url=https://example.com/topic
+2026-08-02T12:01:33+0530 WARNING tech_content_agent.ai llm.response.invalid provider=openai_compatible model=local-model attempt=1/2 error_type=ValidationError
+2026-08-02T12:01:33+0530 INFO tech_content_agent.ai llm.request.start provider=openai_compatible model=local-model attempt=2/2 topic_url=https://example.com/topic
+2026-08-02T12:01:33+0530 INFO tech_content_agent.ai llm.request.completed provider=openai_compatible model=local-model attempt=2/2 duration_ms=0 total_duration_ms=1 slides=6 claims=1
+2026-08-02T12:01:33+0530 INFO tech_content_agent.instagram instagram.insights.start media_id=real-media-id
+2026-08-02T12:01:33+0530 INFO tech_content_agent.instagram instagram.insights.completed media_id=real-media-id metrics=1
+2026-08-02T12:01:33+0530 ERROR tech_content_agent.instagram instagram.api.failed operation=carousel item creation status_code=400 code=100 subcode=2207005 message=The image URL is not publicly accessible
+2026-08-02T12:01:33+0530 INFO tech_content_agent.instagram instagram.reel.publish.start post_id=7 video_url=https://example.ngrok.app/generated/post-7-reel.mp4
+2026-08-02T12:01:33+0530 INFO tech_content_agent.instagram instagram.reel.publish.completed post_id=7 media_id=published-reel-id
+2026-08-02T12:01:33+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:01:33+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:01:33+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:01:33+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:33+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:33+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=4 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:01:33+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:01:33+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:01:33+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_demo_pipeline_approval_pu0/generated/post-1-slide-1.jpg
+2026-08-02T12:01:33+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_demo_pipeline_approval_pu0/generated/post-1-slide-2.jpg
+2026-08-02T12:01:33+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_demo_pipeline_approval_pu0/generated/post-1-slide-3.jpg
+2026-08-02T12:01:33+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_demo_pipeline_approval_pu0/generated/post-1-slide-4.jpg
+2026-08-02T12:01:33+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_demo_pipeline_approval_pu0/generated/post-1-slide-5.jpg
+2026-08-02T12:01:33+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_demo_pipeline_approval_pu0/generated/post-1-slide-6.jpg
+2026-08-02T12:01:33+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:01:33+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:01:33+0530 INFO tech_content_agent.pipeline metrics.sync.start eligible_posts=1
+2026-08-02T12:01:33+0530 INFO tech_content_agent.pipeline metrics.post.completed post_id=1 metrics=5
+2026-08-02T12:01:33+0530 INFO tech_content_agent.pipeline metrics.sync.completed synced=1 skipped=0 failed=0
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:34+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_second_identical_draft_is0/generated/post-1-slide-1.jpg
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_second_identical_draft_is0/generated/post-1-slide-2.jpg
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_second_identical_draft_is0/generated/post-1-slide-3.jpg
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_second_identical_draft_is0/generated/post-1-slide-4.jpg
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_second_identical_draft_is0/generated/post-1-slide-5.jpg
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_second_identical_draft_is0/generated/post-1-slide-6.jpg
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:34+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=2 duplicate_score=1.000 fact_score=1.000 status=blocked_duplicate
+2026-08-02T12:01:34+0530 WARNING tech_content_agent.pipeline pipeline.run.blocked post_id=2 reason=blocked_duplicate
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:34+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_live_metrics_skip_histori0/generated/post-1-slide-1.jpg
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_live_metrics_skip_histori0/generated/post-1-slide-2.jpg
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_live_metrics_skip_histori0/generated/post-1-slide-3.jpg
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_live_metrics_skip_histori0/generated/post-1-slide-4.jpg
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_live_metrics_skip_histori0/generated/post-1-slide-5.jpg
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_live_metrics_skip_histori0/generated/post-1-slide-6.jpg
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline metrics.sync.start eligible_posts=1
+2026-08-02T12:01:34+0530 WARNING tech_content_agent.pipeline metrics.post.skipped post_id=1 reason=mock_media_id_in_live_mode
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline metrics.sync.completed synced=0 skipped=1 failed=0
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:01:34+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:01:34+0530 ERROR tech_content_agent.pipeline pipeline.generation.timeout topic_id=1 timeout_seconds=0.0
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets reel.render.start post_id=7 beats=2 segment_seconds=1.00
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets reel.render.completed post_id=7 path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-26/test_reel_renderer_creates_vid0/post-7-reel.mp4 frames=4 voiceover=False music=False
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets reel.voiceover.openrouter.start post_id=8 model=test-tts-model voice=nova
+2026-08-02T12:01:34+0530 INFO tech_content_agent.assets reel.voiceover.openrouter.completed post_id=8 generation_id=gen-1
+2026-08-02T12:02:21+0530 INFO tech_content_agent.ai compatible.response routed_model=unknown prompt_tokens=unknown completion_tokens=unknown
+2026-08-02T12:02:21+0530 INFO tech_content_agent.ai compatible.response routed_model=test/free-model prompt_tokens=10 completion_tokens=20
+2026-08-02T12:02:21+0530 INFO tech_content_agent.ai llm.request.start provider=openai_compatible model=local-model attempt=1/2 topic_url=https://example.com/topic
+2026-08-02T12:02:21+0530 WARNING tech_content_agent.ai llm.response.invalid provider=openai_compatible model=local-model attempt=1/2 error_type=ValidationError
+2026-08-02T12:02:21+0530 INFO tech_content_agent.ai llm.request.start provider=openai_compatible model=local-model attempt=2/2 topic_url=https://example.com/topic
+2026-08-02T12:02:21+0530 INFO tech_content_agent.ai llm.request.completed provider=openai_compatible model=local-model attempt=2/2 duration_ms=0 total_duration_ms=1 slides=6 claims=1
+2026-08-02T12:02:21+0530 INFO tech_content_agent.instagram instagram.insights.start media_id=real-media-id
+2026-08-02T12:02:21+0530 INFO tech_content_agent.instagram instagram.insights.completed media_id=real-media-id metrics=1
+2026-08-02T12:02:21+0530 ERROR tech_content_agent.instagram instagram.api.failed operation=carousel item creation status_code=400 code=100 subcode=2207005 message=The image URL is not publicly accessible
+2026-08-02T12:02:21+0530 INFO tech_content_agent.instagram instagram.reel.publish.start post_id=7 video_url=https://example.ngrok.app/generated/post-7-reel.mp4
+2026-08-02T12:02:21+0530 INFO tech_content_agent.instagram instagram.reel.publish.completed post_id=7 media_id=published-reel-id
+2026-08-02T12:02:21+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:02:21+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:02:21+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:02:21+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:02:21+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:02:21+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:02:21+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:02:21+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:02:21+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_demo_pipeline_approval_pu0/generated/post-1-slide-1.jpg
+2026-08-02T12:02:21+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_demo_pipeline_approval_pu0/generated/post-1-slide-2.jpg
+2026-08-02T12:02:21+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_demo_pipeline_approval_pu0/generated/post-1-slide-3.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_demo_pipeline_approval_pu0/generated/post-1-slide-4.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_demo_pipeline_approval_pu0/generated/post-1-slide-5.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_demo_pipeline_approval_pu0/generated/post-1-slide-6.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline metrics.sync.start eligible_posts=1
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline metrics.post.completed post_id=1 metrics=5
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline metrics.sync.completed synced=1 skipped=0 failed=0
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:02:22+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_second_identical_draft_is0/generated/post-1-slide-1.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_second_identical_draft_is0/generated/post-1-slide-2.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_second_identical_draft_is0/generated/post-1-slide-3.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_second_identical_draft_is0/generated/post-1-slide-4.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_second_identical_draft_is0/generated/post-1-slide-5.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_second_identical_draft_is0/generated/post-1-slide-6.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:02:22+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=2 duplicate_score=1.000 fact_score=1.000 status=blocked_duplicate
+2026-08-02T12:02:22+0530 WARNING tech_content_agent.pipeline pipeline.run.blocked post_id=2 reason=blocked_duplicate
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:02:22+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_live_metrics_skip_histori0/generated/post-1-slide-1.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_live_metrics_skip_histori0/generated/post-1-slide-2.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_live_metrics_skip_histori0/generated/post-1-slide-3.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_live_metrics_skip_histori0/generated/post-1-slide-4.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_live_metrics_skip_histori0/generated/post-1-slide-5.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_live_metrics_skip_histori0/generated/post-1-slide-6.jpg
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline metrics.sync.start eligible_posts=1
+2026-08-02T12:02:22+0530 WARNING tech_content_agent.pipeline metrics.post.skipped post_id=1 reason=mock_media_id_in_live_mode
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline metrics.sync.completed synced=0 skipped=1 failed=0
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:02:22+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:02:22+0530 ERROR tech_content_agent.pipeline pipeline.generation.timeout topic_id=1 timeout_seconds=0.0
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets reel.render.start post_id=7 beats=2 segment_seconds=1.00
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets reel.render.completed post_id=7 path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-27/test_reel_renderer_creates_vid0/post-7-reel.mp4 frames=4 voiceover=False music=False
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets reel.voiceover.openrouter.start post_id=8 model=test-tts-model voice=nova
+2026-08-02T12:02:22+0530 INFO tech_content_agent.assets reel.voiceover.openrouter.completed post_id=8 generation_id=gen-1
+2026-08-02T12:04:33+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=https://blog.cloudflare.com/moq-relays/ force_demo=False format=reel
+2026-08-02T12:04:33+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=15 source=Cloudflare Blog score=55.53 url=https://blog.cloudflare.com/moq-relays/
+2026-08-02T12:04:33+0530 INFO tech_content_agent.ai llm.request.start provider=openai_compatible model=google/gemma-4-26b-a4b-it:free attempt=1/2 topic_url=https://blog.cloudflare.com/moq-relays/
+2026-08-02T12:04:45+0530 INFO tech_content_agent.ai compatible.response routed_model=google/gemma-4-26b-a4b-it:free prompt_tokens=642 completion_tokens=556
+2026-08-02T12:04:45+0530 INFO tech_content_agent.ai llm.request.completed provider=openai_compatible model=google/gemma-4-26b-a4b-it:free attempt=1/2 duration_ms=11981 total_duration_ms=11981 slides=5 claims=2
+2026-08-02T12:04:45+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=15 duration_ms=11988 title=Custom MoQ Relays Explained
+2026-08-02T12:04:45+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=9 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:04:45+0530 INFO tech_content_agent.assets reel.render.start post_id=9 beats=5 segment_seconds=2.40
+2026-08-02T12:04:45+0530 INFO tech_content_agent.assets reel.voiceover.openrouter.start post_id=9 model=openai/gpt-4o-mini-tts-2025-12-15 voice=nova
+2026-08-02T12:04:46+0530 WARNING tech_content_agent.assets reel.voiceover.openrouter.failed status_code=400 error_type=HTTPStatusError fallback=macos
+2026-08-02T12:04:49+0530 INFO tech_content_agent.assets reel.render.completed post_id=9 path=data/generated/post-9-reel.mp4 frames=7 voiceover=True music=False
+2026-08-02T12:04:49+0530 INFO tech_content_agent.telegram telegram.approval.send.start post_id=9 assets=1
+2026-08-02T12:04:57+0530 INFO tech_content_agent.telegram telegram.approval.send.completed post_id=9 message_id=32
+2026-08-02T12:04:57+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=9 status=pending_approval assets=1 telegram_sent=True
+2026-08-02T12:06:35+0530 INFO tech_content_agent.telegram telegram.poll.stop
+2026-08-02T12:06:35+0530 INFO tech_content_agent app.stop
+2026-08-02T12:06:35+0530 INFO tech_content_agent app.start env=development mode=live text_provider=openai_compatible text_ready=True image_provider=none
+2026-08-02T12:06:35+0530 INFO tech_content_agent telegram.update_mode mode=polling
+2026-08-02T12:06:35+0530 INFO tech_content_agent.telegram telegram.poll.start timeout_seconds=25
+2026-08-02T12:06:36+0530 INFO tech_content_agent.telegram telegram.poll.stop
+2026-08-02T12:06:36+0530 INFO tech_content_agent app.stop
+2026-08-02T12:06:36+0530 INFO tech_content_agent app.start env=development mode=live text_provider=openai_compatible text_ready=True image_provider=none
+2026-08-02T12:06:36+0530 INFO tech_content_agent telegram.update_mode mode=polling
+2026-08-02T12:06:36+0530 INFO tech_content_agent.telegram telegram.poll.start timeout_seconds=25
+2026-08-02T12:06:40+0530 INFO tech_content_agent.ai compatible.response routed_model=unknown prompt_tokens=unknown completion_tokens=unknown
+2026-08-02T12:06:40+0530 INFO tech_content_agent.ai compatible.response routed_model=test/free-model prompt_tokens=10 completion_tokens=20
+2026-08-02T12:06:40+0530 INFO tech_content_agent.ai llm.request.start provider=openai_compatible model=local-model attempt=1/2 topic_url=https://example.com/topic
+2026-08-02T12:06:40+0530 WARNING tech_content_agent.ai llm.response.invalid provider=openai_compatible model=local-model attempt=1/2 error_type=ValidationError
+2026-08-02T12:06:40+0530 INFO tech_content_agent.ai llm.request.start provider=openai_compatible model=local-model attempt=2/2 topic_url=https://example.com/topic
+2026-08-02T12:06:40+0530 INFO tech_content_agent.ai llm.request.completed provider=openai_compatible model=local-model attempt=2/2 duration_ms=0 total_duration_ms=1 slides=6 claims=1
+2026-08-02T12:06:40+0530 INFO tech_content_agent.instagram instagram.insights.start media_id=real-media-id
+2026-08-02T12:06:40+0530 INFO tech_content_agent.instagram instagram.insights.completed media_id=real-media-id metrics=1
+2026-08-02T12:06:40+0530 ERROR tech_content_agent.instagram instagram.api.failed operation=carousel item creation status_code=400 code=100 subcode=2207005 message=The image URL is not publicly accessible
+2026-08-02T12:06:40+0530 INFO tech_content_agent.instagram instagram.reel.publish.start post_id=7 video_url=https://example.ngrok.app/generated/post-7-reel.mp4
+2026-08-02T12:06:40+0530 INFO tech_content_agent.instagram instagram.reel.publish.completed post_id=7 media_id=published-reel-id
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:06:40+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=2 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_demo_pipeline_approval_pu0/generated/post-1-slide-1.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_demo_pipeline_approval_pu0/generated/post-1-slide-2.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_demo_pipeline_approval_pu0/generated/post-1-slide-3.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_demo_pipeline_approval_pu0/generated/post-1-slide-4.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_demo_pipeline_approval_pu0/generated/post-1-slide-5.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_demo_pipeline_approval_pu0/generated/post-1-slide-6.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline metrics.sync.start eligible_posts=1
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline metrics.post.completed post_id=1 metrics=5
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline metrics.sync.completed synced=1 skipped=0 failed=0
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:06:40+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_second_identical_draft_is0/generated/post-1-slide-1.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_second_identical_draft_is0/generated/post-1-slide-2.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_second_identical_draft_is0/generated/post-1-slide-3.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_second_identical_draft_is0/generated/post-1-slide-4.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_second_identical_draft_is0/generated/post-1-slide-5.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_second_identical_draft_is0/generated/post-1-slide-6.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:06:40+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=2 duplicate_score=1.000 fact_score=1.000 status=blocked_duplicate
+2026-08-02T12:06:40+0530 WARNING tech_content_agent.pipeline pipeline.run.blocked post_id=2 reason=blocked_duplicate
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:06:40+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_live_metrics_skip_histori0/generated/post-1-slide-1.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_live_metrics_skip_histori0/generated/post-1-slide-2.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_live_metrics_skip_histori0/generated/post-1-slide-3.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_live_metrics_skip_histori0/generated/post-1-slide-4.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_live_metrics_skip_histori0/generated/post-1-slide-5.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_live_metrics_skip_histori0/generated/post-1-slide-6.jpg
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline metrics.sync.start eligible_posts=1
+2026-08-02T12:06:40+0530 WARNING tech_content_agent.pipeline metrics.post.skipped post_id=1 reason=mock_media_id_in_live_mode
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline metrics.sync.completed synced=0 skipped=1 failed=0
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:06:40+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:06:40+0530 ERROR tech_content_agent.pipeline pipeline.generation.timeout topic_id=1 timeout_seconds=0.0
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets reel.render.start post_id=7 beats=2 segment_seconds=1.00
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets reel.render.completed post_id=7 path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-28/test_reel_renderer_creates_vid0/post-7-reel.mp4 frames=4 voiceover=False music=False
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets reel.voiceover.openrouter.start post_id=8 model=test-tts-model voice=nova
+2026-08-02T12:06:40+0530 INFO tech_content_agent.assets reel.voiceover.openrouter.completed post_id=8 generation_id=gen-1
+2026-08-02T12:08:27+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=https://openai.com/index/advancing-responsible-ai-across-europe force_demo=False format=reel
+2026-08-02T12:08:27+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=17 source=OpenAI News score=63.2 url=https://openai.com/index/advancing-responsible-ai-across-europe
+2026-08-02T12:08:27+0530 INFO tech_content_agent.ai llm.request.start provider=openai_compatible model=google/gemma-4-26b-a4b-it:free attempt=1/2 topic_url=https://openai.com/index/advancing-responsible-ai-across-europe
+2026-08-02T12:08:49+0530 INFO tech_content_agent.ai compatible.response routed_model=google/gemma-4-26b-a4b-it:free prompt_tokens=629 completion_tokens=578
+2026-08-02T12:08:49+0530 INFO tech_content_agent.ai llm.request.completed provider=openai_compatible model=google/gemma-4-26b-a4b-it:free attempt=1/2 duration_ms=22363 total_duration_ms=22363 slides=5 claims=2
+2026-08-02T12:08:49+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=17 duration_ms=22370 title=OpenAI's European AI Strategy
+2026-08-02T12:08:49+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=10 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:08:49+0530 INFO tech_content_agent.assets reel.render.start post_id=10 beats=5 segment_seconds=2.40
+2026-08-02T12:08:50+0530 INFO tech_content_agent.assets reel.voiceover.openrouter.start post_id=10 model=microsoft/mai-voice-2 voice=en-US-Harper:MAI-Voice-2
+2026-08-02T12:08:53+0530 INFO tech_content_agent.assets reel.voiceover.openrouter.completed post_id=10 generation_id=gen-tts-1785652730-zsEbOW3pnvuaQsjFI2x7
+2026-08-02T12:08:55+0530 INFO tech_content_agent.assets reel.render.completed post_id=10 path=data/generated/post-10-reel.mp4 frames=7 voiceover=True music=False
+2026-08-02T12:08:55+0530 INFO tech_content_agent.telegram telegram.approval.send.start post_id=10 assets=1
+2026-08-02T12:08:58+0530 INFO tech_content_agent.telegram telegram.approval.send.completed post_id=10 message_id=34
+2026-08-02T12:08:58+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=10 status=pending_approval assets=1 telegram_sent=True
+2026-08-02T12:09:32+0530 INFO tech_content_agent.telegram telegram.poll.received updates=1
+2026-08-02T12:09:32+0530 INFO tech_content_agent telegram.callback.received update_id=338038124 post_id=10 action=approve
+2026-08-02T12:09:32+0530 INFO tech_content_agent telegram.approval.start post_id=10
+2026-08-02T12:09:32+0530 INFO tech_content_agent.instagram instagram.reel.publish.start post_id=10 video_url=https://d96a-205-254-186-106.ngrok-free.app/generated/post-10-reel.mp4
+2026-08-02T12:09:33+0530 INFO tech_content_agent.telegram telegram.callback.answered callback_id=2242082420537465622
+2026-08-02T12:10:37+0530 ERROR tech_content_agent telegram.publish.failed post_id=10 error_type=TimeoutError error=Instagram media container was not ready within 60 seconds
+2026-08-02T12:11:23+0530 INFO tech_content_agent.telegram telegram.poll.stop
+2026-08-02T12:11:23+0530 INFO tech_content_agent app.stop
+2026-08-02T12:11:24+0530 INFO tech_content_agent app.start env=development mode=live text_provider=openai_compatible text_ready=True image_provider=none
+2026-08-02T12:11:24+0530 INFO tech_content_agent telegram.update_mode mode=polling
+2026-08-02T12:11:24+0530 INFO tech_content_agent.telegram telegram.poll.start timeout_seconds=25
+2026-08-02T12:11:24+0530 INFO tech_content_agent.telegram telegram.poll.stop
+2026-08-02T12:11:24+0530 INFO tech_content_agent app.stop
+2026-08-02T12:11:24+0530 INFO tech_content_agent app.start env=development mode=live text_provider=openai_compatible text_ready=True image_provider=none
+2026-08-02T12:11:24+0530 INFO tech_content_agent telegram.update_mode mode=polling
+2026-08-02T12:11:24+0530 INFO tech_content_agent.telegram telegram.poll.start timeout_seconds=25
+2026-08-02T12:11:28+0530 INFO tech_content_agent.ai compatible.response routed_model=unknown prompt_tokens=unknown completion_tokens=unknown
+2026-08-02T12:11:28+0530 INFO tech_content_agent.ai compatible.response routed_model=test/free-model prompt_tokens=10 completion_tokens=20
+2026-08-02T12:11:28+0530 INFO tech_content_agent.ai llm.request.start provider=openai_compatible model=local-model attempt=1/2 topic_url=https://example.com/topic
+2026-08-02T12:11:28+0530 WARNING tech_content_agent.ai llm.response.invalid provider=openai_compatible model=local-model attempt=1/2 error_type=ValidationError
+2026-08-02T12:11:28+0530 INFO tech_content_agent.ai llm.request.start provider=openai_compatible model=local-model attempt=2/2 topic_url=https://example.com/topic
+2026-08-02T12:11:28+0530 INFO tech_content_agent.ai llm.request.completed provider=openai_compatible model=local-model attempt=2/2 duration_ms=0 total_duration_ms=1 slides=6 claims=1
+2026-08-02T12:11:28+0530 INFO tech_content_agent.instagram instagram.insights.start media_id=real-media-id
+2026-08-02T12:11:28+0530 INFO tech_content_agent.instagram instagram.insights.completed media_id=real-media-id metrics=1
+2026-08-02T12:11:28+0530 ERROR tech_content_agent.instagram instagram.api.failed operation=carousel item creation status_code=400 code=100 subcode=2207005 message=The image URL is not publicly accessible
+2026-08-02T12:11:28+0530 INFO tech_content_agent.instagram instagram.reel.publish.start post_id=7 video_url=https://example.ngrok.app/generated/post-7-reel.mp4
+2026-08-02T12:11:28+0530 INFO tech_content_agent.instagram instagram.container.status container_id=container-id attempt=1 status=FINISHED
+2026-08-02T12:11:28+0530 INFO tech_content_agent.instagram instagram.reel.publish.completed post_id=7 media_id=published-reel-id
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:11:28+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=2 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_demo_pipeline_approval_pu0/generated/post-1-slide-1.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_demo_pipeline_approval_pu0/generated/post-1-slide-2.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_demo_pipeline_approval_pu0/generated/post-1-slide-3.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_demo_pipeline_approval_pu0/generated/post-1-slide-4.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_demo_pipeline_approval_pu0/generated/post-1-slide-5.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_demo_pipeline_approval_pu0/generated/post-1-slide-6.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline metrics.sync.start eligible_posts=1
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline metrics.post.completed post_id=1 metrics=5
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline metrics.sync.completed synced=1 skipped=0 failed=0
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:11:28+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_second_identical_draft_is0/generated/post-1-slide-1.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_second_identical_draft_is0/generated/post-1-slide-2.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_second_identical_draft_is0/generated/post-1-slide-3.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_second_identical_draft_is0/generated/post-1-slide-4.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_second_identical_draft_is0/generated/post-1-slide-5.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_second_identical_draft_is0/generated/post-1-slide-6.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:11:28+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=2 duplicate_score=1.000 fact_score=1.000 status=blocked_duplicate
+2026-08-02T12:11:28+0530 WARNING tech_content_agent.pipeline pipeline.run.blocked post_id=2 reason=blocked_duplicate
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:11:28+0530 INFO tech_content_agent.ai llm.bypass reason=mock_mode topic_url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.generation.completed topic_id=1 duration_ms=1 title=Why smaller AI models are becoming the default for production workflows
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.quality.completed post_id=1 duplicate_score=0.000 fact_score=1.000 status=rendering
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.start post_id=1 slides=6 provider=deterministic
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=1 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_live_metrics_skip_histori0/generated/post-1-slide-1.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=2 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_live_metrics_skip_histori0/generated/post-1-slide-2.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=3 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_live_metrics_skip_histori0/generated/post-1-slide-3.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=4 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_live_metrics_skip_histori0/generated/post-1-slide-4.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=5 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_live_metrics_skip_histori0/generated/post-1-slide-5.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.slide post_id=1 slide=6 ai_background=False path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_live_metrics_skip_histori0/generated/post-1-slide-6.jpg
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets assets.render.completed post_id=1 files=6 provider=deterministic
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.run.completed post_id=1 status=pending_approval assets=6 telegram_sent=False
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline metrics.sync.start eligible_posts=1
+2026-08-02T12:11:28+0530 WARNING tech_content_agent.pipeline metrics.post.skipped post_id=1 reason=mock_media_id_in_live_mode
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline metrics.sync.completed synced=0 skipped=1 failed=0
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.run.start requested_topic=top-ranked force_demo=True format=carousel
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.discovery.start mode=demo
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.discovery.completed mode=demo topics=1
+2026-08-02T12:11:28+0530 INFO tech_content_agent.pipeline pipeline.topic.selected topic_id=1 source=Demo: Vendor Engineering Brief score=87.0 url=https://example.com/demo/smaller-ai-models
+2026-08-02T12:11:28+0530 ERROR tech_content_agent.pipeline pipeline.generation.timeout topic_id=1 timeout_seconds=0.0
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets reel.render.start post_id=7 beats=2 segment_seconds=1.00
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets reel.render.completed post_id=7 path=/private/var/folders/90/njg5s42j6fsf2cw5m67md7b40000gp/T/pytest-of-rreddy/pytest-29/test_reel_renderer_creates_vid0/post-7-reel.mp4 frames=4 voiceover=False music=False
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets reel.voiceover.openrouter.start post_id=8 model=test-tts-model voice=nova
+2026-08-02T12:11:28+0530 INFO tech_content_agent.assets reel.voiceover.openrouter.completed post_id=8 generation_id=gen-1
+2026-08-02T12:11:50+0530 INFO tech_content_agent.instagram instagram.reel.publish.start post_id=10 video_url=https://d96a-205-254-186-106.ngrok-free.app/generated/post-10-reel.mp4
+2026-08-02T12:11:51+0530 INFO tech_content_agent.instagram instagram.container.status container_id=18061361747591447 attempt=1 status=IN_PROGRESS
+2026-08-02T12:11:57+0530 INFO tech_content_agent.instagram instagram.container.status container_id=18061361747591447 attempt=2 status=IN_PROGRESS
+2026-08-02T12:12:02+0530 INFO tech_content_agent.instagram instagram.container.status container_id=18061361747591447 attempt=3 status=IN_PROGRESS
+2026-08-02T12:12:07+0530 INFO tech_content_agent.instagram instagram.container.status container_id=18061361747591447 attempt=4 status=IN_PROGRESS
+2026-08-02T12:12:13+0530 INFO tech_content_agent.instagram instagram.container.status container_id=18061361747591447 attempt=5 status=IN_PROGRESS
+2026-08-02T12:12:18+0530 INFO tech_content_agent.instagram instagram.container.status container_id=18061361747591447 attempt=6 status=FINISHED
+2026-08-02T12:12:24+0530 INFO tech_content_agent.instagram instagram.reel.publish.completed post_id=10 media_id=18616947049017044

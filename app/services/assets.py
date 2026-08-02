@@ -315,6 +315,73 @@ class ReelRenderer:
     def _create_voiceover(self, post_id: int, script: str) -> Path | None:
         if not self.settings.enable_reel_voiceover or not script.strip():
             return None
+        if self.settings.reel_tts_provider.lower() == "openrouter":
+            narration = self._create_openrouter_voiceover(post_id, script)
+            if narration:
+                return narration
+        return self._create_macos_voiceover(post_id, script)
+
+    def _create_openrouter_voiceover(self, post_id: int, script: str) -> Path | None:
+        if (
+            "openrouter.ai" not in self.settings.openai_compatible_base_url
+            or not self.settings.openai_compatible_api_key
+        ):
+            logger.info("reel.voiceover.openrouter.skipped reason=not_configured")
+            return None
+        logger.info(
+            "reel.voiceover.openrouter.start post_id=%d model=%s voice=%s",
+            post_id,
+            self.settings.openrouter_tts_model,
+            self.settings.openrouter_tts_voice,
+        )
+        try:
+            response = httpx.post(
+                f"{self.settings.openai_compatible_base_url.rstrip('/')}/audio/speech",
+                headers={
+                    "Authorization": f"Bearer {self.settings.openai_compatible_api_key}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": self.settings.openrouter_tts_model,
+                    "input": script.strip(),
+                    "voice": self.settings.openrouter_tts_voice,
+                    "response_format": "mp3",
+                    "speed": 1.0,
+                },
+                timeout=self.settings.ai_request_timeout_seconds,
+            )
+            response.raise_for_status()
+            narration = self.output_dir / f"post-{post_id}-narration.mp3"
+            narration.write_bytes(response.content)
+            if self._duration(narration) <= 0.1:
+                narration.unlink(missing_ok=True)
+                logger.warning("reel.voiceover.openrouter.failed reason=empty_audio")
+                return None
+            logger.info(
+                "reel.voiceover.openrouter.completed post_id=%d generation_id=%s",
+                post_id,
+                response.headers.get("x-generation-id", "unknown"),
+            )
+            return narration
+        except httpx.HTTPError as exc:
+            response = getattr(exc, "response", None)
+            message = None
+            if response is not None:
+                try:
+                    payload = response.json()
+                    error = payload.get("error", payload)
+                    message = error.get("message") if isinstance(error, dict) else str(error)
+                except ValueError:
+                    message = response.text[:300]
+            logger.warning(
+                "reel.voiceover.openrouter.failed status_code=%s error_type=%s message=%s fallback=macos",
+                getattr(response, "status_code", None),
+                type(exc).__name__,
+                message,
+            )
+            return None
+
+    def _create_macos_voiceover(self, post_id: int, script: str) -> Path | None:
         say = shutil.which("say")
         if not say:
             logger.warning("reel.voiceover.skipped reason=say_not_available")

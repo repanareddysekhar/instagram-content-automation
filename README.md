@@ -66,7 +66,7 @@ Choose **Reel video** in the dashboard to produce a vertical 1080×1920 MP4 with
 
 Every published description is assembled as: generated caption, hashtags, then a Disclaimer using POST_DISCLAIMER. Set POST_DISCLAIMER in .env to your preferred wording.
 
-Voice narration uses the local Mac voice selected by REEL_VOICE (Samantha by default); set ENABLE_REEL_VOICEOVER=false to turn it off. Use REEL_AUDIO_PATH only for audio you own or are licensed to use. The agent does not scrape or attach “trending” copyrighted music. After publishing, you can add a currently trending licensed track from Instagram's native Reel editor, where availability depends on the account, country, and track rights.
+Voice narration tries OpenRouter TTS first, using OPENROUTER_TTS_MODEL and OPENROUTER_TTS_VOICE (Microsoft MAI Voice 2 with Harper by default). If the TTS model is unavailable, rate-limited, or has no TTS credit, it falls back automatically to the local Mac voice selected by REEL_VOICE (Samantha by default). Set ENABLE_REEL_VOICEOVER=false to turn narration off. Use REEL_AUDIO_PATH only for audio you own or are licensed to use. The agent does not scrape or attach “trending” copyrighted music. After publishing, you can add a currently trending licensed track from Instagram's native Reel editor, where availability depends on the account, country, and track rights.
 
 ## Switch to live mode
 
@@ -122,6 +122,8 @@ curl "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
 
 4. Configure an Instagram professional account and a Meta app. Add `INSTAGRAM_USER_ID`, `INSTAGRAM_ACCESS_TOKEN`, and the current `META_GRAPH_API_VERSION`.
 5. Deploy the app to a public HTTPS URL and set `APP_BASE_URL`. Instagram must be able to fetch each generated JPEG from `/generated/...`; `localhost` image URLs cannot be published by Instagram.
+
+Video containers can take longer than image carousels to process. The app waits up to `INSTAGRAM_CONTAINER_TIMEOUT_SECONDS=300` by default and logs every polling status; set the value higher if Meta processing is consistently slower for your account.
 
 The Instagram adapter intentionally does not guess a Graph API version. Put the version used by your Meta app in `.env`, and revalidate it during Meta's version-upgrade windows.
 

@@ -48,8 +48,11 @@ class Settings(BaseSettings):
     reel_transition_seconds: float = 0.35
     reel_audio_path: str = ""
     enable_reel_voiceover: bool = True
+    reel_tts_provider: str = "openrouter"
     reel_voice: str = "Samantha"
     reel_voice_rate: int = 170
+    openrouter_tts_model: str = "microsoft/mai-voice-2"
+    openrouter_tts_voice: str = "en-US-Harper:MAI-Voice-2"
 
     telegram_bot_token: str = ""
     telegram_chat_id: str = ""
@@ -59,6 +62,8 @@ class Settings(BaseSettings):
 
     meta_graph_base_url: str = "https://graph.instagram.com"
     meta_graph_api_version: str = ""
+    instagram_container_timeout_seconds: int = 300
+    instagram_container_poll_seconds: int = 5
     instagram_user_id: str = ""
     instagram_access_token: str = ""
     instagram_insight_metrics: str = (
