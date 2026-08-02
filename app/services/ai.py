@@ -23,7 +23,8 @@ CONTENT_SCHEMA: dict[str, Any] = {
         "hook": {"type": "string"},
         "caption": {"type": "string"},
         "hashtags": {"type": "array", "items": {"type": "string"}, "minItems": 3},
-        "format": {"type": "string", "enum": ["carousel"]},
+        "format": {"type": "string", "enum": ["carousel", "reel"]},
+        "voiceover": {"type": "string"},
         "slides": {
             "type": "array",
             "minItems": 5,
@@ -268,10 +269,12 @@ class ContentWriter:
             "openai_compatible": self.settings.openai_compatible_text_model,
         }.get(self.settings.text_provider.lower(), "unknown")
 
-    def write(self, topic: Topic) -> ContentDraft:
+    def write(self, topic: Topic, content_format: str = "carousel") -> ContentDraft:
+        if content_format not in {"carousel", "reel"}:
+            raise ValueError(f"Unsupported content format: {content_format}")
         if self.settings.mock_mode:
             logger.info("llm.bypass reason=mock_mode topic_url=%s", topic.url)
-            return self._demo_draft(topic)
+            return self._demo_draft(topic, content_format)
         if not self.provider:
             raise RuntimeError(
                 f"TEXT_PROVIDER={self.settings.text_provider} is not configured; "
@@ -281,11 +284,18 @@ class ContentWriter:
         prompt = f"""
 Role: You are the editorial lead for a credible technology education account.
 
-Goal: Turn the source below into a concise, useful Instagram carousel.
+Goal: Turn the source below into a concise, useful Instagram {content_format}.
 
 Success criteria:
-- 6 slides: hook, context, 3 useful insights, closing takeaway
+- Return format exactly as "{content_format}"
+- for a carousel, use 6 slides: hook, context, 3 useful insights, closing takeaway
+- for a reel, use 5 concise insight beats; the renderer supplies the opening and closing cards
 - each slide body is at most 38 words
+- for a reel, make the hook an immediate curiosity-driven sentence of at most 12 words
+  and make the final beat a clear follow/save call to action; keep the total suitable for a 20-second reel
+- for a reel, the narration is spoken directly from the returned hook, headlines, and bodies:
+  use at most 75 words across all of that text, with each headline at most 8 words and
+  each body at most 9 words. Do not include source URLs in on-screen or spoken copy.
 - no hype, invented metrics, dates, or capabilities
 - every factual claim includes the supplied source URL and a short evidence excerpt
 - the caption ends with a thoughtful question
@@ -313,7 +323,13 @@ Return only the required structured result.
             try:
                 raw = self.provider.generate(prompt, CONTENT_SCHEMA)
                 draft = ContentDraft.model_validate(json.loads(raw))
-            except (json.JSONDecodeError, ValidationError) as exc:
+                if draft.format != content_format:
+                    raise ValueError(
+                        f"Provider returned {draft.format}, expected {content_format}"
+                    )
+                if content_format == "reel":
+                    self._validate_reel_script(draft)
+            except (json.JSONDecodeError, ValidationError, ValueError) as exc:
                 logger.warning(
                     "llm.response.invalid provider=%s model=%s attempt=%d/%d error_type=%s",
                     self.settings.text_provider,
@@ -356,7 +372,21 @@ Return only the required structured result.
         raise RuntimeError("Text generation exhausted without a result")
 
     @staticmethod
-    def _demo_draft(topic: Topic) -> ContentDraft:
+    def _validate_reel_script(draft: ContentDraft) -> None:
+        words = draft.hook.split()
+        for slide in draft.slides:
+            if len(slide.headline.split()) > 8:
+                raise ValueError("Reel headline exceeds eight words")
+            if len(slide.body.split()) > 9:
+                raise ValueError("Reel body exceeds nine words")
+            words.extend(slide.headline.split())
+            words.extend(slide.body.split())
+        words.extend("Follow for practical source-grounded tech signals".split())
+        if len(words) > 75:
+            raise ValueError("Reel spoken script exceeds 75 words")
+
+    @staticmethod
+    def _demo_draft(topic: Topic, content_format: str) -> ContentDraft:
         return ContentDraft.model_validate(
             {
                 "title": topic.title,
@@ -368,7 +398,13 @@ Return only the required structured result.
                     "Which task would you route first?"
                 ),
                 "hashtags": ["#AIEngineering", "#LLMOps", "#DeveloperTools", "#TechExplained"],
-                "format": "carousel",
+                "format": content_format,
+                "voiceover": (
+                    "The smartest AI stack does not use one giant model for everything. "
+                    "Start with the smallest model that clears your quality bar for routine work. "
+                    "Escalate ambiguous or high-stakes tasks only when they need more reasoning. "
+                    "Measure accepted output, not just token price. Follow for practical, source-grounded tech signals."
+                ),
                 "slides": [
                     {
                         "headline": "Bigger isn’t always better",

@@ -34,13 +34,14 @@ class ContentDraft(BaseModel):
     slides: list[Slide]
     claims: list[Claim]
     format: Literal["carousel", "reel"] = "carousel"
+    voiceover: str = ""
 
 
 class PipelineRequest(BaseModel):
     topic_url: HttpUrl | None = None
     force_demo: bool = False
+    content_format: Literal["carousel", "reel"] = "carousel"
 
 
 class DecisionRequest(BaseModel):
     note: str = ""
-

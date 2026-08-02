@@ -23,7 +23,9 @@ header { min-height: 430px; display: grid; grid-template-columns: 1.4fr .6fr; al
 h1 { font-size: clamp(58px, 8vw, 126px); line-height: .85; letter-spacing: -.075em; margin: 0; max-width: 940px; }
 h1 em { color: transparent; -webkit-text-stroke: 1.5px var(--ink); font-style: normal; }
 .header-actions { justify-self: end; max-width: 360px; }
-.header-actions p { color: var(--muted); font-size: 15px; line-height: 1.7; margin: 0 0 30px; }
+.header-actions p { color: var(--muted); font-size: 15px; line-height: 1.7; margin: 0 0 22px; }
+.format-control { display: flex; align-items: center; gap: 10px; margin: 0 0 18px; font: 11px "DM Mono", monospace; color: var(--muted); }
+.format-control select { flex: 1; height: 38px; padding: 0 10px; border: 1px solid var(--line); background: rgba(255,255,255,.35); color: var(--ink); font: 12px "DM Mono", monospace; }
 button { font: 700 13px/1 Manrope, sans-serif; border: 0; cursor: pointer; transition: transform .2s, box-shadow .2s; }
 button:hover { transform: translateY(-2px); }
 button:disabled { opacity: .5; cursor: wait; transform: none; }

@@ -13,6 +13,11 @@ class Settings(BaseSettings):
     mock_mode: bool = True
     admin_token: str = "change-me"
     log_level: str = "INFO"
+    log_file: str = "data/agent.log"
+    post_disclaimer: str = (
+        "Educational content based on publicly available sources. "
+        "Verify details with the original source before making decisions."
+    )
 
     text_provider: str = "gemini"
     ai_request_timeout_seconds: float = 90.0
@@ -33,11 +38,18 @@ class Settings(BaseSettings):
     anthropic_base_url: str = "https://api.anthropic.com/v1"
 
     openai_compatible_api_key: str = ""
+    # Pinning a concrete OpenAI-compatible model avoids broad router queue delays.
     openai_compatible_text_model: str = ""
     openai_compatible_base_url: str = ""
 
     image_provider: str = "none"
     enable_ai_art: bool = False
+    reel_segment_seconds: float = 2.4
+    reel_transition_seconds: float = 0.35
+    reel_audio_path: str = ""
+    enable_reel_voiceover: bool = True
+    reel_voice: str = "Samantha"
+    reel_voice_rate: int = 170
 
     telegram_bot_token: str = ""
     telegram_chat_id: str = ""

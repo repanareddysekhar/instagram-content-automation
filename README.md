@@ -2,7 +2,7 @@
 
 A production-minded MVP for:
 
-> trusted sources → grounded AI script → carousel images → Telegram approval → Instagram publish → performance learning
+> trusted sources → grounded AI script → reel video or carousel → Telegram approval → Instagram publish → performance learning
 
 It runs immediately in mock mode, so you can inspect the full workflow without API keys. Live mode can use Gemini, Anthropic, OpenAI, or an OpenAI-compatible service for structured scripts. Optional generated art supports Gemini and OpenAI; the default deterministic renderer needs no image-model credit. Telegram inline buttons handle approval, and Instagram's official API publishes carousels.
 
@@ -13,10 +13,10 @@ It runs immediately in mock mode, so you can inspect the full workflow without A
 - Provider-neutral script generation with a strict JSON schema
 - Source-bound claim checks and a hard publish block for unsupported claims
 - Jaccard duplicate detection against the historical post library
-- 1080×1350 deterministic carousel renderer
+- 1080×1350 deterministic carousel renderer and 1080×1920 MP4 reel renderer
 - Optional Gemini or OpenAI artwork behind deterministic typography
-- Telegram album preview with Approve and Reject buttons
-- Official Instagram carousel container and `media_publish` flow
+- Telegram image/video preview with Approve and Reject buttons
+- Official Instagram carousel or Reel publishing flow
 - Insights sync and save/share-weighted topic feedback
 - Responsive operations dashboard
 - SQLite audit log, Docker packaging, CLI worker, and tests
@@ -56,9 +56,17 @@ Set `LOG_LEVEL=INFO` (the default) and run with Uvicorn to see each pipeline sta
 uvicorn app.main:app --reload
 ```
 
-The logs show source-by-source RSS scanning, the selected topic, text provider and configured model, OpenRouter's actual routed model and token usage, LLM request start/completion/failure, schema retries, quality scores, duplicate/fact blocks, deterministic or AI-backed image rendering, publishing, and per-post metrics results. API keys and Instagram access tokens are not included in request URLs.
+The logs stream in the Uvicorn terminal and are persisted to `data/agent.log` by default (rotated at 2 MB, keeping three backups). The logs show source-by-source RSS scanning, the selected topic, text provider and configured model, OpenRouter's actual routed model and token usage, LLM request start/completion/failure, schema retries, quality scores, duplicate/fact blocks, deterministic or AI-backed image rendering, publishing, and per-post metrics results. API keys and Instagram access tokens are not included in request URLs.
 
 The dashboard also includes a **Pipeline activity** timeline. Use **Scan sources** to refresh the trusted RSS feeds, filter or search the resulting topics, and select **Generate** on a specific topic. **Generate top topic** scans live sources and selects the highest-ranked result; it no longer forces the built-in demo topic.
+
+## Reels, music, and post descriptions
+
+Choose **Reel video** in the dashboard to produce a vertical 1080×1920 MP4 with a text-led opening hook, insight beats, animated fades, an ending follow/save hook, and local voice narration. Reels publish through Instagram's Reel flow; choose **Carousel images** to retain the existing image-post workflow.
+
+Every published description is assembled as: generated caption, hashtags, then a Disclaimer using POST_DISCLAIMER. Set POST_DISCLAIMER in .env to your preferred wording.
+
+Voice narration uses the local Mac voice selected by REEL_VOICE (Samantha by default); set ENABLE_REEL_VOICEOVER=false to turn it off. Use REEL_AUDIO_PATH only for audio you own or are licensed to use. The agent does not scrape or attach “trending” copyrighted music. After publishing, you can add a currently trending licensed track from Instagram's native Reel editor, where availability depends on the account, country, and track rights.
 
 ## Switch to live mode
 

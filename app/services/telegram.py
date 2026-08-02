@@ -25,24 +25,34 @@ class TelegramApproval:
 
         logger.info("telegram.approval.send.start post_id=%s assets=%d", post["id"], len(post["assets"]))
         async with httpx.AsyncClient(timeout=60) as client:
-            files = {}
-            media = []
-            for index, asset in enumerate(post["assets"]):
-                key = f"slide{index}"
-                files[key] = (Path(asset).name, Path(asset).read_bytes(), "image/jpeg")
-                media.append(
-                    {
-                        "type": "photo",
-                        "media": f"attach://{key}",
-                        "caption": post["hook"] if index == 0 else "",
-                    }
+            is_reel = len(post["assets"]) == 1 and post["assets"][0].endswith(".mp4")
+            if is_reel:
+                asset = Path(post["assets"][0])
+                preview = await client.post(
+                    f"{self.base_url}/sendVideo",
+                    data={"chat_id": self.settings.telegram_chat_id, "caption": post["hook"]},
+                    files={"video": (asset.name, asset.read_bytes(), "video/mp4")},
                 )
-            album = await client.post(
-                f"{self.base_url}/sendMediaGroup",
-                data={"chat_id": self.settings.telegram_chat_id, "media": json.dumps(media)},
-                files=files,
-            )
-            album.raise_for_status()
+                preview.raise_for_status()
+            else:
+                files = {}
+                media = []
+                for index, asset in enumerate(post["assets"]):
+                    key = f"slide{index}"
+                    files[key] = (Path(asset).name, Path(asset).read_bytes(), "image/jpeg")
+                    media.append(
+                        {
+                            "type": "photo",
+                            "media": f"attach://{key}",
+                            "caption": post["hook"] if index == 0 else "",
+                        }
+                    )
+                preview = await client.post(
+                    f"{self.base_url}/sendMediaGroup",
+                    data={"chat_id": self.settings.telegram_chat_id, "media": json.dumps(media)},
+                    files=files,
+                )
+                preview.raise_for_status()
             decision = await client.post(
                 f"{self.base_url}/sendMessage",
                 json={

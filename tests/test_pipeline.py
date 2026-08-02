@@ -1,4 +1,5 @@
 from pathlib import Path
+from time import sleep
 
 import pytest
 
@@ -124,3 +125,28 @@ async def test_approval_can_be_tested_without_publishing(tmp_path: Path) -> None
     approved = await ContentPipeline(settings, db).approve(post_id)
 
     assert approved["status"] == "approved"
+
+
+@pytest.mark.asyncio
+async def test_generation_timeout_does_not_block_pipeline(tmp_path: Path) -> None:
+    settings = Settings(
+        _env_file=None,
+        mock_mode=False,
+        database_path=str(tmp_path / "agent.db"),
+        ai_request_timeout_seconds=0.01,
+    )
+    db = Database(settings.database_file)
+    db.init()
+    pipeline = ContentPipeline(settings, db)
+
+    def slow_writer(*args, **kwargs):
+        sleep(0.1)
+        raise AssertionError("The timed-out worker result should not be used")
+
+    pipeline.writer.write = slow_writer
+
+    with pytest.raises(RuntimeError, match="Text generation timed out"):
+        await pipeline.run(force_demo=True)
+
+    assert db.list_events(limit=1)[0]["event_type"] == "generation.failed"
+    assert db.list_events(limit=1)[0]["payload"]["error_type"] == "TimeoutError"

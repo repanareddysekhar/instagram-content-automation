@@ -1,3 +1,4 @@
+import asyncio
 import json
 import logging
 from pathlib import Path
@@ -8,7 +9,7 @@ from app.config import Settings
 from app.db import Database
 from app.schema import Topic
 from app.services.ai import ContentWriter
-from app.services.assets import CarouselRenderer
+from app.services.assets import CarouselRenderer, ReelRenderer
 from app.services.instagram import InstagramPublisher
 from app.services.quality import highest_duplicate_score, verify_claims
 from app.services.telegram import TelegramApproval
@@ -25,6 +26,7 @@ class ContentPipeline:
         self.finder = TopicFinder(Path(__file__).with_name("sources.json"))
         self.writer = ContentWriter(settings)
         self.renderer = CarouselRenderer(settings)
+        self.reel_renderer = ReelRenderer(settings)
         self.telegram = TelegramApproval(settings)
         self.instagram = InstagramPublisher(settings)
 
@@ -46,11 +48,17 @@ class ContentPipeline:
         logger.info("pipeline.discovery.completed mode=%s topics=%d", mode, len(results))
         return results
 
-    async def run(self, topic_url: str | None = None, force_demo: bool = False) -> dict[str, Any]:
+    async def run(
+        self,
+        topic_url: str | None = None,
+        force_demo: bool = False,
+        content_format: str = "carousel",
+    ) -> dict[str, Any]:
         logger.info(
-            "pipeline.run.start requested_topic=%s force_demo=%s",
+            "pipeline.run.start requested_topic=%s force_demo=%s format=%s",
             topic_url or "top-ranked",
             force_demo,
+            content_format,
         )
         if topic_url:
             selected = self.db.get_topic_by_url(topic_url)
@@ -89,7 +97,31 @@ class ContentPipeline:
             },
         )
         try:
-            draft = self.writer.write(topic)
+            draft = await asyncio.wait_for(
+                asyncio.to_thread(
+                    self.writer.write,
+                    topic,
+                    content_format=content_format,
+                ),
+                timeout=self.settings.ai_request_timeout_seconds,
+            )
+        except TimeoutError as exc:
+            self.db.add_event(
+                "generation.failed",
+                payload={
+                    "provider": self.settings.text_provider,
+                    "topic_id": selected["id"],
+                    "error_type": "TimeoutError",
+                },
+            )
+            logger.error(
+                "pipeline.generation.timeout topic_id=%s timeout_seconds=%.1f",
+                selected["id"],
+                self.settings.ai_request_timeout_seconds,
+            )
+            raise RuntimeError(
+                "Text generation timed out. Try again or choose a faster OpenRouter model."
+            ) from exc
         except Exception as exc:
             self.db.add_event(
                 "generation.failed",
@@ -159,11 +191,22 @@ class ContentPipeline:
             logger.warning("pipeline.run.blocked post_id=%d reason=%s", post_id, status)
             return self.db.get_post(post_id) or {}
 
-        assets = self.renderer.render(
-            post_id,
-            [slide.model_dump() for slide in draft.slides],
-            topic.source_name,
-        )
+        if draft.format == "reel":
+            assets = self.reel_renderer.render(
+                post_id,
+                [slide.model_dump() for slide in draft.slides],
+                topic.source_name,
+                draft.hook,
+                # Speak the same hook and cards the viewer sees. Keeping narration
+                # separate from visual copy caused the two to drift.
+                "",
+            )
+        else:
+            assets = self.renderer.render(
+                post_id,
+                [slide.model_dump() for slide in draft.slides],
+                topic.source_name,
+            )
         target_status = "approved" if self.settings.auto_publish else "pending_approval"
         self.db.update_post(
             post_id,
@@ -175,6 +218,7 @@ class ContentPipeline:
             post_id,
             {
                 "count": len(assets),
+                "format": draft.format,
                 "provider": (
                     self.settings.image_provider
                     if self.renderer.image_provider
@@ -227,7 +271,15 @@ class ContentPipeline:
             if self.settings.mock_mode:
                 media_id = f"mock-instagram-{post_id}"
             else:
-                media_id = await self.instagram.publish_carousel(post)
+                reel = next(
+                    (asset for asset in post["assets"] if asset.lower().endswith(".mp4")),
+                    None,
+                )
+                media_id = (
+                    await self.instagram.publish_reel(post, reel)
+                    if reel
+                    else await self.instagram.publish_carousel(post)
+                )
             self.db.update_post(
                 post_id,
                 status="published",

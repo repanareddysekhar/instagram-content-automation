@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -77,7 +78,7 @@ class InstagramPublisher:
                 data={
                     "media_type": "CAROUSEL",
                     "children": ",".join(child_ids),
-                    "caption": f"{post['caption']}\n\n{' '.join(post['hashtags'])}",
+                    "caption": self._post_description(post),
                 },
             )
             self._raise_api_error(container, "carousel creation")
@@ -94,6 +95,42 @@ class InstagramPublisher:
             media_id = str(published.json()["id"])
             logger.info("instagram.publish.completed post_id=%s media_id=%s", post["id"], media_id)
             return media_id
+
+    async def publish_reel(self, post: dict[str, Any], video_asset: str) -> str:
+        if not self.settings.instagram_ready:
+            raise RuntimeError("Instagram API is not fully configured")
+        video_url = (
+            f"{self.settings.app_base_url.rstrip('/')}/generated/"
+            f"{Path(video_asset).name}"
+        )
+        logger.info("instagram.reel.publish.start post_id=%s video_url=%s", post["id"], video_url)
+        async with self._client(timeout=120) as client:
+            container = await client.post(
+                f"{self.root}/{self.settings.instagram_user_id}/media",
+                data={
+                    "media_type": "REELS",
+                    "video_url": video_url,
+                    "caption": self._post_description(post),
+                    "share_to_feed": "true",
+                },
+            )
+            self._raise_api_error(container, "reel creation")
+            container_id = container.json()["id"]
+            await self._wait_until_ready(client, container_id)
+            published = await client.post(
+                f"{self.root}/{self.settings.instagram_user_id}/media_publish",
+                data={"creation_id": container_id},
+            )
+            self._raise_api_error(published, "reel publishing")
+            media_id = str(published.json()["id"])
+            logger.info("instagram.reel.publish.completed post_id=%s media_id=%s", post["id"], media_id)
+            return media_id
+
+    def _post_description(self, post: dict[str, Any]) -> str:
+        parts = [post["caption"].strip(), " ".join(post["hashtags"]).strip()]
+        if self.settings.post_disclaimer.strip():
+            parts.append(f"Disclaimer: {self.settings.post_disclaimer.strip()}")
+        return "\n\n".join(part for part in parts if part)
 
     async def _wait_until_ready(self, client: httpx.AsyncClient, container_id: str) -> None:
         for _ in range(12):

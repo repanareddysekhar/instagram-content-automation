@@ -62,7 +62,7 @@ function renderPosts(posts) {
       <div>
         <h3>${escapeHtml(post.title)}</h3>
         <div class="post-meta">
-          <span>${post.slides.length} SLIDES</span>
+          <span>${post.assets.some(asset => asset.toLowerCase().endsWith(".mp4")) ? "REEL VIDEO" : `${post.slides.length} SLIDES`}</span>
           <span>FACTS ${Math.round(post.fact_score * 100)}%</span>
           <span>DUP ${Math.round(post.duplicate_score * 100)}%</span>
         </div>
@@ -73,7 +73,8 @@ function renderPosts(posts) {
           <button class="icon-button" title="Approve" onclick="decide(${post.id}, 'approve')">✓</button>
           <button class="icon-button" title="Reject" onclick="decide(${post.id}, 'reject')">×</button>
         ` : ""}
-        ${post.assets[0] ? `<a href="/generated/${post.assets[0].split("/").pop()}" target="_blank"><button class="icon-button" title="Preview">↗</button></a>` : ""}
+        ${["approved", "publish_failed"].includes(post.status) ? `<button class="icon-button" title="Publish" onclick="publishPost(${post.id})">↑</button>` : ""}
+        ${post.assets[0] ? `<a href="/generated/${(post.assets.find(asset => asset.toLowerCase().endsWith(".mp4")) || post.assets[0]).split("/").pop()}" target="_blank"><button class="icon-button" title="Preview">↗</button></a>` : ""}
       </div>
     </article>
   `).join("");
@@ -151,6 +152,15 @@ async function decide(postId, action) {
 }
 window.decide = decide;
 
+async function publishPost(postId) {
+  try {
+    await api(`/api/posts/${postId}/publish`, {method: "POST"});
+    toast("Published to Instagram");
+    await load();
+  } catch (error) { toast(error.message); }
+}
+window.publishPost = publishPost;
+
 async function runPipeline(topicUrl = null) {
   const button = topicUrl ? null : $("#runButton");
   if (button) {
@@ -160,9 +170,13 @@ async function runPipeline(topicUrl = null) {
   try {
     await api("/api/pipeline/run", {
       method: "POST",
-      body: JSON.stringify({topic_url: topicUrl, force_demo: false}),
+      body: JSON.stringify({
+        topic_url: topicUrl,
+        force_demo: false,
+        content_format: $("#contentFormat").value,
+      }),
     });
-    toast("Carousel generated and queued for approval");
+    toast(`${$("#contentFormat").value === "reel" ? "Reel" : "Carousel"} generated and queued for approval`);
     await load();
   } catch (error) { toast(error.message); }
   finally {

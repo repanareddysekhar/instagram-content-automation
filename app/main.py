@@ -17,7 +17,7 @@ from app.schema import DecisionRequest, PipelineRequest
 
 
 settings = get_settings()
-logger = configure_logging(settings.log_level)
+logger = configure_logging(settings.log_level, settings.log_file)
 db = Database(settings.database_file)
 pipeline = ContentPipeline(settings, db)
 STATIC_DIR = Path(__file__).with_name("static")
@@ -190,6 +190,7 @@ async def run_pipeline(
         return await pipeline.run(
             topic_url=str(payload.topic_url) if payload.topic_url else None,
             force_demo=payload.force_demo,
+            content_format=payload.content_format,
         )
     except Exception as exc:
         raise to_http_error(exc) from exc
