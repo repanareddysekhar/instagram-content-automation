@@ -63,7 +63,21 @@ async def health() -> dict[str, Any]:
         "status": "ok",
         "mode": "mock" if settings.mock_mode else "live",
         "integrations": {
-            "openai": settings.openai_ready,
+            "text_ai": {
+                "provider": settings.text_provider,
+                "ready": settings.text_provider_ready,
+            },
+            "image_ai": {
+                "provider": settings.image_provider,
+                "enabled": settings.enable_ai_art,
+                "ready": settings.image_provider_ready,
+            },
+            "providers": {
+                "openai": settings.openai_ready,
+                "gemini": settings.gemini_ready,
+                "anthropic": settings.anthropic_ready,
+                "openai_compatible": settings.openai_compatible_ready,
+            },
             "telegram": settings.telegram_ready,
             "instagram": settings.instagram_ready,
         },

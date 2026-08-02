@@ -12,9 +12,28 @@ class Settings(BaseSettings):
     mock_mode: bool = True
     admin_token: str = "change-me"
 
+    text_provider: str = "gemini"
+    ai_request_timeout_seconds: float = 90.0
+
     openai_api_key: str = ""
     openai_text_model: str = "gpt-5.6-terra"
     openai_image_model: str = "gpt-image-2"
+
+    gemini_api_key: str = ""
+    gemini_text_model: str = "gemini-2.5-flash"
+    gemini_image_model: str = "gemini-3.1-flash-image"
+    gemini_base_url: str = "https://generativelanguage.googleapis.com/v1beta"
+    gemini_image_base_url: str = "https://generativelanguage.googleapis.com/v1"
+
+    anthropic_api_key: str = ""
+    anthropic_text_model: str = "claude-haiku-4-5"
+    anthropic_base_url: str = "https://api.anthropic.com/v1"
+
+    openai_compatible_api_key: str = ""
+    openai_compatible_text_model: str = ""
+    openai_compatible_base_url: str = ""
+
+    image_provider: str = "none"
     enable_ai_art: bool = False
 
     telegram_bot_token: str = ""
@@ -55,8 +74,40 @@ class Settings(BaseSettings):
     def openai_ready(self) -> bool:
         return bool(self.openai_api_key)
 
+    @property
+    def gemini_ready(self) -> bool:
+        return bool(self.gemini_api_key)
+
+    @property
+    def anthropic_ready(self) -> bool:
+        return bool(self.anthropic_api_key)
+
+    @property
+    def openai_compatible_ready(self) -> bool:
+        return bool(self.openai_compatible_base_url and self.openai_compatible_text_model)
+
+    @property
+    def text_provider_ready(self) -> bool:
+        readiness = {
+            "openai": self.openai_ready,
+            "gemini": self.gemini_ready,
+            "anthropic": self.anthropic_ready,
+            "openai_compatible": self.openai_compatible_ready,
+        }
+        return readiness.get(self.text_provider.lower(), False)
+
+    @property
+    def image_provider_ready(self) -> bool:
+        if not self.enable_ai_art:
+            return False
+        readiness = {
+            "none": False,
+            "openai": self.openai_ready,
+            "gemini": self.gemini_ready,
+        }
+        return readiness.get(self.image_provider.lower(), False)
+
 
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
-

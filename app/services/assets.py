@@ -2,7 +2,9 @@ import base64
 import io
 import textwrap
 from pathlib import Path
+from typing import Protocol
 
+import httpx
 from openai import OpenAI
 from PIL import Image, ImageDraw, ImageFont
 
@@ -16,22 +18,103 @@ PALETTES = [
 ]
 
 
+class ImageProvider(Protocol):
+    def generate(self, prompt: str) -> Image.Image | None: ...
+
+
+class OpenAIImageProvider:
+    def __init__(self, api_key: str, model: str):
+        self.client = OpenAI(api_key=api_key)
+        self.model = model
+
+    def generate(self, prompt: str) -> Image.Image | None:
+        result = self.client.images.generate(
+            model=self.model,
+            prompt=prompt,
+            size="1024x1536",
+            quality="low",
+        )
+        if not result.data or not result.data[0].b64_json:
+            return None
+        return Image.open(io.BytesIO(base64.b64decode(result.data[0].b64_json))).convert("RGB")
+
+
+class GeminiImageProvider:
+    def __init__(
+        self,
+        api_key: str,
+        model: str,
+        base_url: str,
+        timeout: float,
+        http_client: httpx.Client | None = None,
+    ):
+        self.api_key = api_key
+        self.model = model
+        self.base_url = base_url.rstrip("/")
+        self.http = http_client or httpx.Client(timeout=timeout)
+
+    def generate(self, prompt: str) -> Image.Image | None:
+        response = self.http.post(
+            f"{self.base_url}/models/{self.model}:generateContent",
+            headers={"x-goog-api-key": self.api_key},
+            json={
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {
+                    "responseModalities": ["IMAGE"],
+                    "responseFormat": {
+                        "image": {"aspectRatio": "4:5", "imageSize": "1K"}
+                    },
+                },
+            },
+        )
+        response.raise_for_status()
+        try:
+            parts = response.json()["candidates"][0]["content"]["parts"]
+        except (KeyError, IndexError, TypeError) as exc:
+            raise RuntimeError("Gemini returned no image content") from exc
+        for part in parts:
+            inline = part.get("inlineData") or part.get("inline_data")
+            if inline and inline.get("data"):
+                return Image.open(io.BytesIO(base64.b64decode(inline["data"]))).convert("RGB")
+        return None
+
+
+def build_image_provider(settings: Settings) -> ImageProvider | None:
+    if (
+        settings.mock_mode
+        or not settings.enable_ai_art
+        or settings.image_provider.lower() == "none"
+    ):
+        return None
+    provider = settings.image_provider.lower()
+    if provider == "openai" and settings.openai_ready:
+        return OpenAIImageProvider(settings.openai_api_key, settings.openai_image_model)
+    if provider == "gemini" and settings.gemini_ready:
+        return GeminiImageProvider(
+            settings.gemini_api_key,
+            settings.gemini_image_model,
+            settings.gemini_image_base_url,
+            settings.ai_request_timeout_seconds,
+        )
+    if provider not in {"openai", "gemini"}:
+        raise ValueError(f"Unsupported IMAGE_PROVIDER: {settings.image_provider}")
+    raise RuntimeError(
+        f"IMAGE_PROVIDER={settings.image_provider} is not configured; add its API key"
+    )
+
+
 class CarouselRenderer:
     def __init__(self, settings: Settings):
         self.settings = settings
         self.output_dir = settings.generated_dir
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        self.client = (
-            OpenAI(api_key=settings.openai_api_key)
-            if settings.openai_ready and settings.enable_ai_art
-            else None
-        )
+        self.image_provider = build_image_provider(settings)
 
     def render(self, post_id: int, slides: list[dict], source_name: str) -> list[str]:
         paths = []
         for index, slide in enumerate(slides, start=1):
             path = self.output_dir / f"post-{post_id}-slide-{index}.jpg"
-            background = self._generate_art(slide["visual_prompt"]) if self.client else None
+            background = self._generate_art(slide["visual_prompt"]) if self.image_provider else None
             self._render_slide(
                 path=path,
                 number=index,
@@ -45,18 +128,14 @@ class CarouselRenderer:
         return paths
 
     def _generate_art(self, prompt: str) -> Image.Image | None:
-        result = self.client.images.generate(
-            model=self.settings.openai_image_model,
-            prompt=(
+        if not self.image_provider:
+            return None
+        return self.image_provider.generate(
+            (
                 "Editorial technology illustration, bold geometric forms, high contrast, "
                 "no words, no logos, ample negative space for text. " + prompt
-            ),
-            size="1024x1536",
-            quality="low",
+            )
         )
-        if not result.data or not result.data[0].b64_json:
-            return None
-        return Image.open(io.BytesIO(base64.b64decode(result.data[0].b64_json))).convert("RGB")
 
     @staticmethod
     def _font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:

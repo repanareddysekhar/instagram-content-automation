@@ -13,6 +13,8 @@ class TelegramApproval:
         self.base_url = f"https://api.telegram.org/bot{settings.telegram_bot_token}"
 
     async def send_for_approval(self, post: dict[str, Any]) -> dict[str, Any]:
+        if self.settings.mock_mode:
+            return {"sent": False, "reason": "Telegram is disabled in mock mode"}
         if not self.settings.telegram_ready:
             return {"sent": False, "reason": "Telegram is not configured"}
 
@@ -58,7 +60,7 @@ class TelegramApproval:
             return {"sent": True, "message": decision.json()["result"]}
 
     async def answer_callback(self, callback_id: str, text: str) -> None:
-        if not self.settings.telegram_ready:
+        if self.settings.mock_mode or not self.settings.telegram_ready:
             return
         async with httpx.AsyncClient(timeout=20) as client:
             response = await client.post(
@@ -66,4 +68,3 @@ class TelegramApproval:
                 json={"callback_query_id": callback_id, "text": text},
             )
             response.raise_for_status()
-
