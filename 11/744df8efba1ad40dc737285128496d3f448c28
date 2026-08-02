@@ -1,0 +1,45 @@
+app/services/telegram.py
+  s_2f86c9c143e854::t_8f1c38b921b38b 16-17,63
+app/main.py
+  s_2f86c9c143e854::t_ec17d1d601bcca 66-80
+app/services/assets.py
+  s_2f86c9c143e854::t_864c2433f5a1c2 5,7,21-82,88-105,111,117,131-134,137
+  s_2f86c9c143e854::t_883a551efaed3f 83-87
+app/config.py
+  s_2f86c9c143e854::t_6be73f1c3dcef2 15-17,21-25,27-36,77-108
+  s_2f86c9c143e854::t_864c2433f5a1c2 26
+  s_2f86c9c143e854::t_1f81e98e383ff7 109
+app/services/ai.py
+  s_2f86c9c143e854::t_dc9a926ed2db5e 2,4,55-109,114-153,162-237,241,244,246-250,272-273
+  s_2f86c9c143e854::t_883a551efaed3f 110-113,154-161
+.env.example
+  s_2f86c9c143e854::t_864c2433f5a1c2 18
+  s_2f86c9c143e854::t_6be73f1c3dcef2 9-17,19-24,29-36
+README.md
+  s_2f86c9c143e854::t_883a551efaed3f 88
+  s_2f86c9c143e854::t_e6b1b15a31718b 7,13,17,54-87,103,105-110,112
+tests/test_ai_providers.py
+  s_2f86c9c143e854::t_1e64afca43787c 1-15,17-65,68-139,152-167,171-172
+  s_2f86c9c143e854::t_18336465afc9f9 16,173-185
+  s_2f86c9c143e854::t_883a551efaed3f 66-67
+  s_2f86c9c143e854::t_8f1c38b921b38b 140-151
+  s_2f86c9c143e854::t_6aa0fa5647e739 168-170
+.idea/vcs.xml
+  s_2f86c9c143e854::t_9be7cf09c01042 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "11744df8efba1ad40dc737285128496d3f448c28",
+  "prompts": {},
+  "sessions": {
+    "s_2f86c9c143e854": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fc0c4-1d60-7c10-b459-a04701ad23ff",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Repana Reddy Sekhar <rreddy@bigid.com>"
+    }
+  }
+}
