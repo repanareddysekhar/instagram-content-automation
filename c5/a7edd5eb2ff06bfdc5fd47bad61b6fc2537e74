@@ -1,0 +1,99 @@
+app/config.py
+  s_2f86c9c143e854::t_6946dd22f034a3 52
+  s_2f86c9c143e854::t_b32caf30c9e699 41
+  s_2f86c9c143e854::t_8946fb535b3124 16
+  s_2f86c9c143e854::t_ab1fda4ce28382 50-51
+  s_2f86c9c143e854::t_20bffe064a054d 17-20,47-49
+app/schema.py
+  s_2f86c9c143e854::t_ab1fda4ce28382 37
+  s_2f86c9c143e854::t_4dff9e3aa0ff6e 43
+app/static/styles.css
+  s_2f86c9c143e854::t_44c35799eb6577 26-28
+tests/test_reels.py
+  s_2f86c9c143e854::t_333898e22a01f6 46-57
+  s_2f86c9c143e854::t_d9013bfaf5746f 1-9,11-45
+  s_2f86c9c143e854::t_985fd3b9939220 60,66,71-74
+  s_2f86c9c143e854::t_f0dd7ad6a96dd1 10
+  s_2f86c9c143e854::t_cc0e94a73cd880 58-59,61-65,67-70
+app/pipeline.py
+  s_2f86c9c143e854::t_20bffe064a054d 12,29,51-54,56,58,61,194-199,203-209,221
+  s_2f86c9c143e854::t_985fd3b9939220 200-202
+  s_2f86c9c143e854::t_67365ceae6684d 1,100-124
+  s_2f86c9c143e854::t_4dff9e3aa0ff6e 55
+  s_2f86c9c143e854::t_475f9e3e862ba3 274-282
+app/services/assets.py
+  s_2f86c9c143e854::t_eda70ccbd3ce4c 430-436,442-446,453-455,457-460,476-492,494-495
+  s_2f86c9c143e854::t_074ee2aa3204b1 339-342
+  s_2f86c9c143e854::t_985fd3b9939220 313
+  s_2f86c9c143e854::t_768aab058790d1 4,259,298-305
+  s_2f86c9c143e854::t_96949626ff1708 396,399-406,408,410
+  s_2f86c9c143e854::t_9bfa5e1d8e4fc3 247,283-288,290,294
+  s_2f86c9c143e854::t_7e1d2679520b5a 307-312,314-338,343-376
+  s_2f86c9c143e854::t_a0c2d5f67a908d 5-6,224-246,248-258,260-282,289,291-293,295-297,306,377-395,397-398,407,409,411-429,437-441,447-452,456,461-475,493,496-515
+app/main.py
+  s_2f86c9c143e854::t_20bffe064a054d 193
+  s_2f86c9c143e854::t_8946fb535b3124 20
+app/static/app.js
+  s_2f86c9c143e854::t_8576539cb5eec7 65,76-77,155-163,173-177,179
+app/services/instagram.py
+  s_2f86c9c143e854::t_475f9e3e862ba3 3,81,99-133
+  s_2f86c9c143e854::t_2ecd0eb21ade7e 134
+README.md
+  s_2f86c9c143e854::t_1559528e633f7d 5,16,18-19,63-64,66-68
+  s_2f86c9c143e854::t_8946fb535b3124 59
+  s_2f86c9c143e854::t_f0dd7ad6a96dd1 65,69
+  s_2f86c9c143e854::t_0b10b0b5bee986 70
+app/services/ai.py
+  s_2f86c9c143e854::t_985fd3b9939220 291-292,296-298,330-331,375-386
+  s_2f86c9c143e854::t_20bffe064a054d 26,273-274,277,287,290,326,329,389,401
+  s_2f86c9c143e854::t_1aff12eea89d3f 294-295
+  s_2f86c9c143e854::t_4dff9e3aa0ff6e 272
+  s_2f86c9c143e854::t_bba5f91daacdb0 327-328,332
+  s_2f86c9c143e854::t_ab1fda4ce28382 27,402-407
+  s_2f86c9c143e854::t_e9c6ac12231907 387-388
+.env.example
+  s_2f86c9c143e854::t_8946fb535b3124 10
+  s_2f86c9c143e854::t_ab1fda4ce28382 47-48
+  s_2f86c9c143e854::t_6946dd22f034a3 49
+  s_2f86c9c143e854::t_20bffe064a054d 11,43-46
+tests/test_instagram.py
+  s_2f86c9c143e854::t_318822d987565f 3,75-123
+  s_2f86c9c143e854::t_d9013bfaf5746f 57-74
+data/agent.log
+  s_2f86c9c143e854::t_fd60a6828c869b 109-188
+  s_2f86c9c143e854::t_80f23041140ffd 9-88
+  s_2f86c9c143e854::t_7d91837683293f 6-8
+  s_2f86c9c143e854::t_5079f2412c6df3 89-91,106-108
+  s_2f86c9c143e854::t_36b076bf8a3904 189-191
+app/static/index.html
+  s_2f86c9c143e854::t_44c35799eb6577 26-33
+app/services/telegram.py
+  s_2f86c9c143e854::t_475f9e3e862ba3 28-34,36-55
+tests/test_pipeline.py
+  s_2f86c9c143e854::t_599a4d42f62185 2,128-152
+app/logging_config.py
+  s_2f86c9c143e854::t_8946fb535b3124 2-3,9,14-16,18-30
+.idea/dataSources.xml
+  s_2f86c9c143e854::t_2ab9de9adc17b2 1-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "c5a7edd5eb2ff06bfdc5fd47bad61b6fc2537e74",
+  "prompts": {},
+  "humans": {
+    "h_cfd29a3d360382": {
+      "author": "Repana Reddy Sekhar <rreddy@bigid.com>"
+    }
+  },
+  "sessions": {
+    "s_2f86c9c143e854": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fc0c4-1d60-7c10-b459-a04701ad23ff",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Repana Reddy Sekhar <rreddy@bigid.com>"
+    }
+  }
+}
